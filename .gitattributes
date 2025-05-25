@@ -1,0 +1,2 @@
+*.psd !text -filter -merge -diff
+*.md !text -filter -merge -diff
