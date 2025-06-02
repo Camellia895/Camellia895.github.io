@@ -11,44 +11,69 @@
 
     <style>
         /* 这里是 CSS 代码 */
-        body {
+        body,html {
             margin: 0; /* 去掉默认的 body 边距 */
+            padding: 0;
             background-color: #1a75d2; /* 一个示例蓝色，你需要从你的图中取色 */
             /* 如果用斜纹背景图: background-image: url('images/stripes_pattern.png'); */
             /* display: flex; /* 方便居中内容 */
             /* justify-content: center; */
             /* align-items: center; */
-            /* min-height: 100vh; */ /* 让 body 至少和视口一样高 */
+            min-height: 100vh;  /* 让 body 至少和视口一样高 */
+            height: 100%;
+            filter: grayscale(1) contrast(300%) brightness(1.1);
+            overflow: hidden
+            
         }
 
         .artwork-container {
-            position: relative; /* 作为内部绝对定位元素的参考 */
-            width: 1280px; /* 假设你的作品宽度，或者用百分比 */
-            height: 720px;  /* 假设你的作品高度，或者用百分比 */
-            /* border: 1px solid white;  用于调试看范围 */
-            /* margin: auto; /* 如果想让容器在 body 中居中 */
-            overflow: hidden; /* 如果内部元素超出，则隐藏 */
+            margin: 0; /* 去掉默认的 body 边距 */
+            padding: 0;
+            object-fit: fill; /* 关键：让图片填充整个容器，允许变形 */
+            /*display: block; /* 移除图片下方的微小空白 (可选) */
+            width: 100vw; /* 假设你的作品宽度，或者用百分比 */
+            height:100vh;  /* 假设你的作品高度，或者用百分比 */
+            /*border: 1px solid white;  边框可选 */
+            margin: auto; /* 如果想让容器在 body 中居中 */
+
+
         }
         .mochiy-pop-p-one-regular {
             font-family: "Mochiy Pop P One", sans-serif;
             font-weight: 400;
             font-style: normal;
         }
+        .半调图像 {
+            position: absolute;
+            top: 0; /* 根据需要调整 */
+            left: 0; /* 根据需要调整 */
+            mix-blend-mode: overlay;
+
+            z-index: 2; /* 确保在其他内容之下 */
+            pointer-events: none; /* 确保不会阻止鼠标事件 */
+
+        }
 
 
         .character-image {
-            position: absolute;
-            right: 50px; /* 示例值 */
-            bottom: 0;   /* 示例值 */
-            width: 500px; /* 示例值 */
+            position: fixed;
+            object-fit: contain; /* 保持图片比例 */
+            object-position: bottom right; /* 图片位置 */
+            bottom: -10px; /* 根据需要调整 */
+            right: 20px;
+            /*border: 1px solid white;*/
+
+            width: 60vw; 
+            height:100vh;
+            right: 0; /* 示例值 */
             /* z-index: 10; */ /* 确保在某些文字之上 */
         }
 
         .text-nekomimi {
             position: absolute;
             top: 50px;    /* 示例值 */
-            left: 50px;   /* 示例值 */
-            font-size: 100px; /* 示例值 */
+            left: 60px;   /* 示例值 */
+            font-size: 120px; /* 示例值 */
             color: white;
             font-weight: bold;
             /* z-index: 20; */ /* 确保在图片之上或之下，根据需要调整 */
@@ -62,122 +87,97 @@
             color: #ADD8E6; /* 浅蓝色示例 */
             line-height: 1.4; /* 调整行间距 */
         }
-        .interactiveTextElement {
+        .interactiveShadow {
             font-family: "Mochiy Pop P One", sans-serif;
-            font-weight: 400;
-            font-style: normal;
-            font-size: 5rem; /* 较大的字体，效果明显 */
-            font-weight: bold;
+
             color: #FFF; /* 初始文字颜色，可以被 text-shadow 覆盖一部分 */
             cursor: default; /* 鼠标样式 */
             /* 初始可以给一个固定的文字阴影，或者不给 */
-            /* text-shadow: 2px 2px 5px rgba(0,0,0,0.5); */
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5); 
 
         /* 你需要为图上的其他文字元素都创建类似的 CSS 规则 */
         /* 比如 .text-100-percent, .text-maid 等 */
         }
-        .interactiveShadow {
-            font-family: "Mochiy Pop P One", sans-serif;
-            font-weight: 400;
-            font-style: normal;
-            font-size: 5rem; /* 较大的字体，效果明显 */
-            font-weight: bold;
-            color: #FFF; /* 初始文字颜色，可以被 text-shadow 覆盖一部分 */
-            cursor: default; /* 鼠标样式 */
-            /* 初始可以给一个固定的文字阴影，或者不给 */
-            /* text-shadow: 2px 2px 5px rgba(0,0,0,0.5); */
 
         /* 你需要为图上的其他文字元素都创建类似的 CSS 规则 */
         /* 比如 .text-100-percent, .text-maid 等 */
-        }        
-
+        
     </style>
 
 </head>
 
 <body>
-    <div class="interactiveShadow">
-        <!-- 斜纹背景可以在 .artwork-container 的 CSS 中用渐变实现，或者在这里放一个背景层图片 -->
+        <img src="images/斜矩形装饰.png" alt="斜矩形装饰" class="artwork-container">
+        <img src="images/半调图像.png" alt="半调图像" class="半调图像">
 
-        <img src="images/立绘.png" alt="猫耳女仆" class="character-image">
+    
 
-        <div class="text-nekomimi">猫耳メイド</div>
-        <div class="text-tags">
+        <img src="images/立绘.png" alt="猫耳女仆" class="character-image ">
+
+        <div class="interactiveShadow text-nekomimi">猫耳メイド</div>
+        
+        <div class="interactiveShadow text-tags">
             animal_ears,blue<br>
             :<,cat_girl<br>
             head_tilt,masterpiece<br>
             looking_at_viewer<br>
             ( ´ρ`)
         </div>
-        <!-- 其他文字元素 -->
-        <!-- <div class="text-100-percent">100%</div> -->
-        <!-- <div class="text-maid">maid</div> -->
-        <!-- ... 更多文字 ... -->
-    </div>
-    <!-- 我们在这里创建一个 h1 元素来显示可交互的文字 -->
 
-    
-    <!-- JavaScript 代码放在 body 结束前 -->
 
     <script>
-        // 获取我们想要应用效果的 HTML 元素
-        const elementsWithShadow = document.querySelectorAll('.interactiveShadow'); 
-        elementsWithShadow.forEach(function(element) {
-        
-        // 检查元素是否存在，防止错误
-        if (interactiveElement) {
-            document.addEventListener('mousemove', function(event) {
-                // 1. 获取鼠标在视口中的坐标
-                const mouseX = event.clientX;
-                const mouseY = event.clientY;
+    // 获取所有 class 为 'interactiveShadow' 的元素
+    const elementsWithShadow = document.querySelectorAll('.interactiveShadow');
 
-                // 2. 获取元素的位置和中心点
-                //    getBoundingClientRect() 返回元素的大小及其相对于视口的位置
-                const rect = interactiveElement.getBoundingClientRect();
+    // 检查是否找到了元素
+    if (elementsWithShadow.length > 0) { // 检查 NodeList 的长度是否大于 0
+        // 为每个找到的元素添加鼠标移动和离开的事件监听
+        elementsWithShadow.forEach(function(currentElement) { // 将参数名改为 currentElement 或 element
+
+            // --- 鼠标移动事件处理 ---
+            document.addEventListener('mousemove', function(mouseMoveEvent) { // 参数名改为 mouseMoveEvent，以区分
+                // 1. 获取鼠标在视口中的坐标
+                const mouseX = mouseMoveEvent.clientX;
+                const mouseY = mouseMoveEvent.clientY;
+
+                // 2. 获取当前元素的位置和中心点
+                const rect = currentElement.getBoundingClientRect(); // 使用 currentElement
                 const elementCenterX = rect.left + rect.width / 2;
                 const elementCenterY = rect.top + rect.height / 2;
 
                 // 3. 计算光源（鼠标）相对于元素中心的方向和程度
-                //    阴影会投向鼠标位置的相反方向
-                //    除以一个数字 (例如 20 或 30) 来控制阴影的移动范围/敏感度
-                //    数值越大，阴影移动越小；数值越小，阴影移动越大。
                 const sensitivity = 30;
                 let offsetX = (elementCenterX - mouseX) / sensitivity;
                 let offsetY = (elementCenterY - mouseY) / sensitivity;
 
-                // 4. (可选) 限制阴影的最大偏移量，防止跑太远
-                const maxOffset = 25; // 最大偏移像素
+                // 4. (可选) 限制阴影的最大偏移量
+                const maxOffset = 25;
                 offsetX = Math.max(-maxOffset, Math.min(maxOffset, offsetX));
                 offsetY = Math.max(-maxOffset, Math.min(maxOffset, offsetY));
 
                 // 5. 设置阴影的模糊半径和颜色
-                const blurRadius = 4; // 阴影的模糊程度
-                // 阴影颜色，可以根据你的背景和文字颜色调整
-                // rgba(0, 0, 0, 0.6) 是带60%透明度的黑色
+                const blurRadius = 4;
                 const shadowColor = 'rgba(0, 0, 0, 0.4)';
 
-                // 6. 应用文字阴影 (text-shadow) 到元素
-                //    格式: h-offset v-offset blur-radius color
-                element.style.textShadow = `${offsetX}px ${offsetY}px ${blurRadius}px ${shadowColor}`;
+                // 6. 应用文字阴影 (text-shadow) 到当前元素
+                currentElement.style.textShadow = `${offsetX}px ${offsetY}px ${blurRadius}px ${shadowColor}`;
             });
 
-            // (可选) 当鼠标移出元素时，可以恢复默认阴影或移除阴影
-            //interactiveElement.addEventListener('mouseleave', function() {
+            // --- (可选) 鼠标离开元素事件处理 ---
+            currentElement.addEventListener('mouseleave', function() {
                 // 恢复到一个固定的阴影或者清除它
-                // interactiveElement.style.textShadow = '2px 2px 5px rgba(0,0,0,0.5)';
+                // currentElement.style.textShadow = '2px 2px 5px rgba(0,0,0,0.5)';
                 // 或者完全清除
-            //interactiveElement.style.textShadow = 'none';
+                currentElement.style.textShadow = 'none'; // 鼠标离开时清除阴影
             });
-
-        } 
-
-        else {
-            console.error("未能找到 ID 为 'interactiveTextElement' 的元素。");
-        }
         });
+    } else {
+        // 这里可以保留原来的 console.error，或者修改一下提示信息
+        console.error("未能找到任何 class 为 'interactiveShadow' 的元素。");
+    }
     </script>
 
-    <p>感谢你的来访!</p>
+
 </body>
 
 </html>
