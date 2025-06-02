@@ -3,63 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的第一个网页</title> <!-- 或者你修改后的标题 -->
+    <title>猫耳メイド作品</title> <!-- 或者你修改后的标题 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&display=swap" rel="stylesheet">
+    
 
     <style>
         /* 这里是 CSS 代码 */
         body {
-            /* 指定背景图片的路径 */
-            /* 请确保 'images/background.jpg' 和你的实际图片路径及文件名一致 */
-            background-image: url('images/Catgirl.png');
-
-            /* 让背景图片覆盖整个页面 */
-            background-size: cover;
-
-            /* 背景图片不重复平铺 */
-            background-repeat: no-repeat;
-
-            /* 当内容超出屏幕时,背景图片固定,不随滚动条滚动 (可选) */
-            background-attachment: fixed;
-
-            /* 让背景图片在视口中居中 (可选) */
-            background-position: center center;
-
-            /* 为了让文字在深色背景上更易读,可以设置一个默认的文字颜色 */
-            /* 如果你的背景比较亮,可能需要深色文字,比如 color: #333; */
-            color: #ddd4d4; /* 假设你的背景图片比较暗,用白色文字 */
-
-            /* (可选) 为了防止文字紧贴浏览器边缘,可以给 body 加一点内边距 */
-            padding: 20px;
+            margin: 0; /* 去掉默认的 body 边距 */
+            background-color: #1a75d2; /* 一个示例蓝色，你需要从你的图中取色 */
+            /* 如果用斜纹背景图: background-image: url('images/stripes_pattern.png'); */
+            /* display: flex; /* 方便居中内容 */
+            /* justify-content: center; */
+            /* align-items: center; */
+            /* min-height: 100vh; */ /* 让 body 至少和视口一样高 */
         }
 
-        /* (可选) 如果背景图片很暗,而你的标题颜色默认是黑色,可能会看不清 */
-        /* 你可以为标题也单独设置颜色 */
-        h1, h2 {
-            /* color: #f0f0f0; */ /* 这是一个浅灰色,如果白色太刺眼可以试试 */
+        .artwork-container {
+            position: relative; /* 作为内部绝对定位元素的参考 */
+            width: 1280px; /* 假设你的作品宽度，或者用百分比 */
+            height: 720px;  /* 假设你的作品高度，或者用百分比 */
+            /* border: 1px solid white;  用于调试看范围 */
+            /* margin: auto; /* 如果想让容器在 body 中居中 */
+            overflow: hidden; /* 如果内部元素超出，则隐藏 */
         }
+        .mochiy-pop-p-one-regular {
+            font-family: "Mochiy Pop P One", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+
+        .character-image {
+            position: absolute;
+            right: 50px; /* 示例值 */
+            bottom: 0;   /* 示例值 */
+            width: 500px; /* 示例值 */
+            /* z-index: 10; */ /* 确保在某些文字之上 */
+        }
+
+        .text-nekomimi {
+            position: absolute;
+            top: 50px;    /* 示例值 */
+            left: 50px;   /* 示例值 */
+            font-size: 100px; /* 示例值 */
+            color: white;
+            font-weight: bold;
+            /* z-index: 20; */ /* 确保在图片之上或之下，根据需要调整 */
+        }
+
+        .text-tags {
+            position: absolute;
+            top: 200px;   /* 示例值 */
+            left: 60px;   /* 示例值 */
+            font-size: 24px;  /* 示例值 */
+            color: #ADD8E6; /* 浅蓝色示例 */
+            line-height: 1.4; /* 调整行间距 */
+        }
+        .interactiveTextElement {
+            font-family: "Mochiy Pop P One", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 5rem; /* 较大的字体，效果明显 */
+            font-weight: bold;
+            color: #FFF; /* 初始文字颜色，可以被 text-shadow 覆盖一部分 */
+            cursor: default; /* 鼠标样式 */
+            /* 初始可以给一个固定的文字阴影，或者不给 */
+            /* text-shadow: 2px 2px 5px rgba(0,0,0,0.5); */
+
+        /* 你需要为图上的其他文字元素都创建类似的 CSS 规则 */
+        /* 比如 .text-100-percent, .text-maid 等 */
+        }
+        .interactiveShadow {
+            font-family: "Mochiy Pop P One", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 5rem; /* 较大的字体，效果明显 */
+            font-weight: bold;
+            color: #FFF; /* 初始文字颜色，可以被 text-shadow 覆盖一部分 */
+            cursor: default; /* 鼠标样式 */
+            /* 初始可以给一个固定的文字阴影，或者不给 */
+            /* text-shadow: 2px 2px 5px rgba(0,0,0,0.5); */
+
+        /* 你需要为图上的其他文字元素都创建类似的 CSS 规则 */
+        /* 比如 .text-100-percent, .text-maid 等 */
+        }        
+
     </style>
 
 </head>
+
 <body>
-    <!-- 你之前写的 body 内容保持不变 -->
-    <h1>欢迎来到我的数字花园</h1>
-    <p>这里是我记录想法,展示作品的地方.它会像一个不断生长的花园一样,充满了我的探索和发现.</p>
+    <div class="interactiveShadow">
+        <!-- 斜纹背景可以在 .artwork-container 的 CSS 中用渐变实现，或者在这里放一个背景层图片 -->
 
-    <div>
-        <h2>我的排版设计</h2>
-        <p>这里我会放上我之前做的一些有趣的排版尝试和作品.希望能让你眼前一亮!</p>
-    </div>
+        <img src="images/立绘.png" alt="猫耳女仆" class="character-image">
 
-    <div>
-        <h2>AI绘画探索(我的科技树!)</h2>
-        <p>最近沉迷AI绘画,下面是我在这个领域的一些阶段性成果,我喜欢把它们想象成一个不断分支的科技树.</p>
+        <div class="text-nekomimi">猫耳メイド</div>
+        <div class="text-tags">
+            animal_ears,blue<br>
+            :<,cat_girl<br>
+            head_tilt,masterpiece<br>
+            looking_at_viewer<br>
+            ( ´ρ`)
+        </div>
+        <!-- 其他文字元素 -->
+        <!-- <div class="text-100-percent">100%</div> -->
+        <!-- <div class="text-maid">maid</div> -->
+        <!-- ... 更多文字 ... -->
     </div>
+    <!-- 我们在这里创建一个 h1 元素来显示可交互的文字 -->
 
-    <div>
-        <h2>随便写写(我的日记)</h2>
-        <p>一些不成熟的想法,一些日常的记录,一些碎碎念.</p>
-    </div>
+    
+    <!-- JavaScript 代码放在 body 结束前 -->
+
+    <script>
+        // 获取我们想要应用效果的 HTML 元素
+        const elementsWithShadow = document.querySelectorAll('.interactiveShadow'); 
+        elementsWithShadow.forEach(function(element) {
+        
+        // 检查元素是否存在，防止错误
+        if (interactiveElement) {
+            document.addEventListener('mousemove', function(event) {
+                // 1. 获取鼠标在视口中的坐标
+                const mouseX = event.clientX;
+                const mouseY = event.clientY;
+
+                // 2. 获取元素的位置和中心点
+                //    getBoundingClientRect() 返回元素的大小及其相对于视口的位置
+                const rect = interactiveElement.getBoundingClientRect();
+                const elementCenterX = rect.left + rect.width / 2;
+                const elementCenterY = rect.top + rect.height / 2;
+
+                // 3. 计算光源（鼠标）相对于元素中心的方向和程度
+                //    阴影会投向鼠标位置的相反方向
+                //    除以一个数字 (例如 20 或 30) 来控制阴影的移动范围/敏感度
+                //    数值越大，阴影移动越小；数值越小，阴影移动越大。
+                const sensitivity = 30;
+                let offsetX = (elementCenterX - mouseX) / sensitivity;
+                let offsetY = (elementCenterY - mouseY) / sensitivity;
+
+                // 4. (可选) 限制阴影的最大偏移量，防止跑太远
+                const maxOffset = 25; // 最大偏移像素
+                offsetX = Math.max(-maxOffset, Math.min(maxOffset, offsetX));
+                offsetY = Math.max(-maxOffset, Math.min(maxOffset, offsetY));
+
+                // 5. 设置阴影的模糊半径和颜色
+                const blurRadius = 4; // 阴影的模糊程度
+                // 阴影颜色，可以根据你的背景和文字颜色调整
+                // rgba(0, 0, 0, 0.6) 是带60%透明度的黑色
+                const shadowColor = 'rgba(0, 0, 0, 0.4)';
+
+                // 6. 应用文字阴影 (text-shadow) 到元素
+                //    格式: h-offset v-offset blur-radius color
+                element.style.textShadow = `${offsetX}px ${offsetY}px ${blurRadius}px ${shadowColor}`;
+            });
+
+            // (可选) 当鼠标移出元素时，可以恢复默认阴影或移除阴影
+            //interactiveElement.addEventListener('mouseleave', function() {
+                // 恢复到一个固定的阴影或者清除它
+                // interactiveElement.style.textShadow = '2px 2px 5px rgba(0,0,0,0.5)';
+                // 或者完全清除
+            //interactiveElement.style.textShadow = 'none';
+            });
+
+        } 
+
+        else {
+            console.error("未能找到 ID 为 'interactiveTextElement' 的元素。");
+        }
+        });
+    </script>
 
     <p>感谢你的来访!</p>
 </body>
+
 </html>
