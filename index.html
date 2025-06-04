@@ -39,12 +39,14 @@
             /* justify-content: center; */
             /* align-items: center; */
             min-height: 100vh;  /* 让 body 至少和视口一样高 */
-            height: 100%;
-            filter: grayscale(1) contrast(300%) brightness(1.1);
+            height: 100%;   
             overflow: hidden
             
             
         }
+    </style>
+    
+    <style> /* 加载覆盖层 */
         #loader-overlay {
             position: fixed; /* 固定定位，覆盖整个视口 */
             top: 0;
@@ -58,7 +60,6 @@
             z-index: 9999; /* 确保在最上层 */
             transition: opacity 0.5s ease-out; /* 淡出效果 */
         }
-
         /* 主内容区 */
         #main-content {
             padding: 20px;
@@ -69,7 +70,75 @@
         #main-content.loaded {
             opacity: 1; /* 当加载完成后，内容变为不透明 */
         }
+    </style>
 
+    <style>
+
+
+        
+        body.阈值效果 {
+            filter: grayscale(1) contrast(300%) brightness(1.1);   
+        }
+
+
+        #半调图像{
+            position: absolute;
+            top: 0; /* 根据需要调整 */
+            left: 0; /* 根据需要调整 */
+            mix-blend-mode: overlay;
+            display: none; /* 初始隐藏 */
+            z-index: 10; /* 确保在其他内容之下 */
+            pointer-events: none; /* 确保不会阻止鼠标事件 */
+            transition: opacity 0.5s ease-out;
+        }
+        #半调效果{
+
+
+        }
+
+        #showImageButton { /* 或者你可以给这个 button 一个特定的 class */
+            position:relative;
+            align-items: center;
+            top: 10%; /* 根据需要调整 */
+            object-fit: contain; /* 根据需要调整 */
+
+            background-color: transparent; /* 关键：使按钮背景透明 */
+            border: none;                /* 关键：移除按钮的边框 */
+            padding: 0;                  /* 关键：移除按钮的内边距 */
+            cursor: pointer;             /* 保持鼠标指针为手型 */
+            outline: none;               /* (可选) 移除点击时的焦点轮廓，但要注意可访问性 */
+
+            /* 如果你还想让按钮本身没有尺寸，完全由图片决定 */
+            display: inline-flex;  /* 或者 inline-block */
+            /* align-items: center;    */
+             justify-content: center; 
+            /* line-height: 0;         */ /* 尝试移除文字基线可能带来的额外空间 */
+        }
+
+    </style>
+    <style>/*边栏*/
+        .sidebar {
+            position: fixed; /* 固定定位 */
+            top: 0;
+            left: 0;
+            width: 30px; /* 根据需要调整宽度 */
+            height: 100vh; /* 高度占满视口 */
+            background-color: rgba(255, 255, 255, 0.4); /* 半透明背景 */
+            backdrop-filter: blur(10px); /* 背景模糊效果 */
+            z-index: 1000; /* 确保在最上层 */
+            padding: 20px; /* 内边距 */
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
+        }
+
+     </style>
+
+    <style>
+
+        .mochiy-pop-p-one-regular {
+            font-family: "Mochiy Pop P One", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
 
         .artwork-container {
             position: fixed; /* 固定定位，覆盖整个视口 */
@@ -84,21 +153,6 @@
             /*border: 1px solid white;  边框可选 */
             margin: auto; /* 如果想让容器在 body 中居中 */
 
-
-        }
-        .mochiy-pop-p-one-regular {
-            font-family: "Mochiy Pop P One", sans-serif;
-            font-weight: 400;
-            font-style: normal;
-        }
-        .半调图像 {
-            position: absolute;
-            top: 0; /* 根据需要调整 */
-            left: 0; /* 根据需要调整 */
-            mix-blend-mode: overlay;
-
-            z-index: 2; /* 确保在其他内容之下 */
-            pointer-events: none; /* 确保不会阻止鼠标事件 */
 
         }
 
@@ -121,7 +175,7 @@
             font-family: "Mochiy Pop P One", sans-serif;
             position: absolute;
             top: 50px;    /* 示例值 */
-            left: 60px;   /* 示例值 */
+            left: 80px;   /* 示例值 */
             font-size: 120px; /* 示例值 */
             color: white;
             font-weight: bold;
@@ -157,7 +211,7 @@
             }
 
 
-        </style>
+    </style>
 
 
         
@@ -166,29 +220,67 @@
 </head>
 
 <body>
-
         <div id="loader-overlay">
         <md-linear-progress value="0" indeterminate="false"></md-linear-progress>
         </div>
         <div class="interactiveShadow">
 
             <div id="main-content">
+                <img src="images/半调图像.png" alt="半调图像" id="半调图像">
                 <img src="images/斜矩形装饰.png" alt="斜矩形装饰" class="artwork-container ">
-                <img src="images/半调图像.png" alt="半调图像" class="半调图像">
                 <img src="images/立绘.png" alt="猫耳女仆" class="character-image interactiveDropShadow">
 
                 <div class="text-nekomimi interactiveTextShadow">猫耳メイド
-                
+                    
                     <div class="text-tags">
-                    animal_ears,blue<br>
-                    :<,cat_girl<br>
-                    head_tilt,masterpiece<br>
-                    looking_at_viewer<br>
-                    ( ´ρ`)
+                        animal_ears,blue<br>
+                        :<,cat_girl<br>
+                        head_tilt,masterpiece<br>
+                        looking_at_viewer<br>
+                        ( ´ρ`)
                     </div>
                 </div>
+                    <div class="sidebar">
+
+                        <button id="showImageButton"  >
+                        <img src="images/太阳.png" alt="半调效果" >
+                        
+                       </button>
+                </div>
             </div>
+
         </div>
+
+    <script>
+
+        console.log("检查点1")
+        const showImageButton = document.getElementById('showImageButton'); // 获取按钮
+        const half = document.getElementById('半调图像');     // 获取图片元素
+        const bodyElement = document.body; // 获取 body 元素
+
+        // 2. 检查元素是否存在，防止错误
+            showImageButton.addEventListener('click', function() {
+                bodyElement.classList.toggle('阈值效果');
+
+                if (half.style.display === 'none' || half.style.display === '') {
+                    // 如果图片当前是隐藏的 (display:none 或者 style.display 未被JS设置过)
+                    half.style.display = 'block'; // 将其显示为块级元素
+
+                    // 或者 half.style.display = 'inline-block'; 如果你希望它像行内块元素
+                    console.log("图片已显示");
+                } 
+                else {
+                    // 如果图片当前是显示的
+                    half.style.display = 'none'; // 将其隐藏
+                    console.log("图片已隐藏");}
+                // 注意：如果使用 classList.toggle，初始的 .hidden-image 中的 display:none;
+                // 和你新增的 .image-visible 中的 display:block; 可能会有优先级问题。
+                // 一个常见的做法是，初始时图片没有 display:none 的 class，
+                // JS 动态添加一个 .is-hidden { display:none; } class 来控制。
+                // 或者，JS 移除 .hidden-image class，并添加 .image-visible class。
+                });
+    </script>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -232,7 +324,7 @@
     setTimeout(() => {
         if (progressValue < 0.8) { // 只有在还没到目标时才更新
             console.log("Simulating further loading...");
-            updateProgress(0.8, 2000); // 在2秒内从当前进度到0.8
+            updateProgress(0.8, 1000); // 在2秒内从当前进度到0.8
         }
     }, 100); // DOMContentLoaded 后 200ms 开始模拟
 
@@ -262,12 +354,12 @@
                 mainContent.classList.add('loaded');
             }
             console.log("Loader hidden, main content shown.");
-        }, 100); // 在进度条满后0.5秒执行
+        }, 100); // 在进度条满后0.1秒执行
     });
 
     // --- 备用方案：如果 onload 事件由于某些原因未触发或延迟过久 ---
     // 你可以设置一个最长等待时间，之后无论如何都显示内容
-    const maxLoadTime = 5000; // 8秒
+    const maxLoadTime = 2000; // 8秒
     setTimeout(() => {
         if (loaderOverlay && loaderOverlay.style.display !== 'none') { // 如果加载层还在显示
             console.warn("Max load time reached. Forcing content display.");
@@ -288,6 +380,8 @@
 
 });
 </script>
+
+
 <script>
     function applyInteractiveShadow(selector, shadowType = 'text',defaultShadowOnLeave = 'none') {
         const elements = document.querySelectorAll(selector);
