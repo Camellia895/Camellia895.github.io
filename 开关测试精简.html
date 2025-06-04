@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>点击切换效果</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0; /* 初始背景色 (亮色) */
+            /* 为了平滑地看到颜色变化，还是加个过渡，但不是必须的 */
+            transition: background-color 2s ease;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        /* 定义一个 "dark-theme" class 用于改变背景色 */
+        body.dark-theme {
+            background-color: #333333; /* 深色主题背景 */
+            color: #f0f0f0; /* 深色主题文字（如果按钮上有文字）*/
+        }
+        body.dark-theme button { /* 让按钮在深色模式下也好看些 */
+            background-color: #555;
+            color: white;
+            border-color: #777;
+        }
+
+    </style>
+</head>
+<body>
+
+    <button id="themeToggleButton">切换主题 (持续3秒)</button>
+
+    <script>
+                // 1. 获取需要操作的 HTML 元素
+        const themeToggleButton = document.getElementById('themeToggleButton'); // 获取按钮
+        const bodyElement = document.body; // 获取 body 元素
+
+        // 2. 定义一个变量来存储定时器的ID，方便后续清除
+        let themeTimeoutId = null;
+
+        // 3. 给按钮添加点击事件监听器
+        themeToggleButton.addEventListener('click', function() {
+            // --- 信息传递开始 ---
+            // "点击" 这个动作本身就是一种信息，它触发了这个函数。
+
+            // --- 信息兑现第一步：立即改变主题 ---
+            console.log("按钮被点击了！");
+
+            // 切换 'dark-theme' class:
+            // 如果 body 已经有 'dark-theme' class，就移除它 (恢复亮色)
+            // 如果 body 没有 'dark-theme' class，就添加它 (切换到暗色)
+            bodyElement.classList.toggle('dark-theme');
+
+            // 检查当前主题状态并输出
+            if (bodyElement.classList.contains('dark-theme')) {
+                console.log("主题已切换到：深色");
+            } else {
+                console.log("主题已恢复到：亮色");
+            }
+
+            // --- 信息兑现第二步：设置定时器，在几秒后自动恢复 ---
+
+            // (可选) 如果之前有未执行完的定时器，先清除它
+            // 这样可以防止快速连续点击导致多个定时器冲突
+            if (themeTimeoutId !== null) {
+                clearTimeout(themeTimeoutId);
+                console.log("清除了上一个恢复主题的定时器。");
+            }
+
+            // 只有当当前是深色主题时，我们才设置自动恢复的定时器
+            if (bodyElement.classList.contains('dark-theme')) {
+                // 设置一个3秒（3000毫秒）后执行的动作
+                themeTimeoutId = setTimeout(function() {
+                    // --- 这是3秒后要兑现的信息 ---
+                    console.log("3秒时间到，自动恢复主题...");
+                    bodyElement.classList.remove('dark-theme'); // 移除深色主题，恢复亮色
+                    console.log("主题已自动恢复到：亮色");
+                    themeTimeoutId = null; // 重置定时器ID变量
+                }, 3000); // 3000 毫秒 = 3 秒
+
+                console.log("设置了一个3秒后恢复主题的定时器，ID:", themeTimeoutId);
+            }
+        });
+                // JavaScript 代码将在这里
+    </script>
+</body>
+</html>

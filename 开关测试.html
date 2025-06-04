@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"> <!-- 必须是 UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中文开关示例</title>
+    <link rel="stylesheet" > <!-- CSS 文件名也可以是中文，但不推荐 -->
+    
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column; /* 让内容垂直排列 */
+            align-items: center; /* 水平居中 */
+
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0; /* 默认背景色 */
+            transition: background-color 0.3s ease; /* 背景色过渡效果 */
+        }/* style.css */
+
+        
+        .switch-container { /* 开关和标签的整体容器 */
+            flex-direction: column; /* 让内容垂直排列 */
+            align-items: center; /* 水平居中 */
+
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .switch { /* 开关本身 (label 元素) */
+             position: relative;
+             display: inline-block;
+             width: 60px;  /* 开关宽度 */
+              height: 34px; /* 开关高度 */
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+    }
+
+        .slider { /* 开关的滑轨和背景 */
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc; /* “关”状态下的背景色 */
+            border-radius: 34px; /* 圆角使其像轨道 */
+            transition: background-color 0.3s ease; /* 背景色过渡 */
+        }
+
+        .slider::before { /* 开关的圆形滑块 */
+            position: absolute;
+            content: "";
+            height: 26px; /* 滑块高度 */
+            width: 26px;  /* 滑块宽度 */
+            left: 4px;    /* “关”状态下距离左边的位置 */
+            bottom: 4px;  /* 距离底部的位置 */
+            background-color: white;
+            border-radius: 50%; /* 圆形滑块 */
+            transition: transform 0.3s ease; /* 滑块移动过渡 */
+        }
+
+        /* 当 checkbox 被选中时 (即开关为“开”状态) */
+        input:checked + .slider {
+            background-color: #2196F3; /* “开”状态下的背景色 (蓝色) */
+        }
+
+        input:checked + .slider::before {
+            transform: translateX(26px); /* 将滑块向右移动 */
+            /* 移动距离 = 开关宽度 - 滑块宽度 - 2 * 左边距 (大致) */
+            /* 60px - 26px - 2 * 4px = 26px */
+        }
+
+        /* (可选) 页面内容区域的样式 */
+        .content-to-change {
+          flex-direction: column; /* 让内容垂直排列 */
+            align-items: center; /* 水平居中 */
+            justify-content: center; /* 垂直居中 (如果内容少) */
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff; /* 默认内容背景 */
+            transition: background-color 0.3s ease, color 0.3s ease; /* 内容区颜色过渡 */
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        /* 当开关开启时，给 body 和 content-to-change 添加 "dark-mode" class (由 JS 控制) */
+        body.dark-mode {
+            background-color: #333; /* 夜间模式的页面背景 */
+            color: #f0f0f0; /* 夜间模式的文字颜色 */
+        }
+
+        body.dark-mode .content-to-change {
+            background-color: #444; /* 夜间模式的内容背景 */
+            border-color: #555;
+            color: #f0f0f0;
+        }
+        </style>
+
+</head>
+
+<body>
+
+    <div class="switch-container">
+        <label class="switch">
+            <input type="checkbox" id="toggleSwitch">
+            <span class="slider"></span>
+        </label>
+        <span class="switch-label">夜间模式</span>
+    </div>
+
+    <div class="content-to-change">
+        <p>这里的内容会根据开关状态改变背景色。</p>
+    </div>
+    </div>
+
+    <script>
+        // 获取 HTML 元素
+        const toggleSwitch = document.getElementById('toggleSwitch');
+        const bodyElement = document.body;
+        const contentToChange = document.querySelector('.content-to-change'); // 获取内容区域
+        const switchLabel = document.querySelector('.switch-label'); // 获取开关标签
+
+        // 检查 localStorage 中是否已保存用户偏好
+        // localStorage 允许你在用户浏览器中存储少量数据，即使用户关闭了浏览器再打开也能保留
+        const currentTheme = localStorage.getItem('theme');
+
+        // 如果 localStorage 中有 'dark' 主题，则应用它
+        if (currentTheme === 'dark') {
+            bodyElement.classList.add('dark-mode');
+            toggleSwitch.checked = true; // 更新开关状态
+            if (switchLabel) switchLabel.textContent = '日间模式'; // 更新标签文本
+        } else {
+            // 默认是日间模式（或者 localStorage 中没有设置）
+            if (switchLabel) switchLabel.textContent = '夜间模式';
+        }
+
+
+        // 监听开关的 'change' 事件
+        // 当复选框的选中状态改变时 (通过点击label或直接点击隐藏的checkbox)，会触发 'change' 事件
+        toggleSwitch.addEventListener('change', function() {
+            // this.checked 会返回复选框当前的选中状态 (true 或 false)
+            if (this.checked) {
+                // 开关被打开 (选中)
+                bodyElement.classList.add('dark-mode'); // 给 body 添加 'dark-mode' class
+                if (contentToChange) {
+                    // (可选) 你也可以直接用JS改变样式，但不推荐，CSS class 更好管理
+                    // contentToChange.style.backgroundColor = '#444';
+                }
+                if (switchLabel) switchLabel.textContent = '日间模式'; // 更新标签文本
+                localStorage.setItem('theme', 'dark'); // 将偏好保存到 localStorage
+                console.log('夜间模式已开启');
+            } else {
+                // 开关被关闭 (未选中)
+                bodyElement.classList.remove('dark-mode'); // 从 body 移除 'dark-mode' class
+                if (contentToChange) {
+                    // contentToChange.style.backgroundColor = '#fff';
+                }
+                if (switchLabel) switchLabel.textContent = '夜间模式'; // 更新标签文本
+                localStorage.setItem('theme', 'light'); // 将偏好保存到 localStorage
+                console.log('夜间模式已关闭');
+            }
+        });
+
+
+    </script>
+</body>
+</html>
