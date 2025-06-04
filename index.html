@@ -70,6 +70,7 @@
         }
 
         .text-nekomimi {
+            font-family: "Mochiy Pop P One", sans-serif;
             position: absolute;
             top: 50px;    /* 示例值 */
             left: 60px;   /* 示例值 */
@@ -80,20 +81,21 @@
         }
 
         .text-tags {
-            position: absolute;
-            top: 200px;   /* 示例值 */
-            left: 60px;   /* 示例值 */
+            font-family: "Mochiy Pop P One", sans-serif;
+            position: relative;
+            top: 0px;   /* 示例值 */
+            left: 0px;   /* 示例值 */
             font-size: 24px;  /* 示例值 */
             color: #ADD8E6; /* 浅蓝色示例 */
             line-height: 1.4; /* 调整行间距 */
         }
         .interactiveShadow {
-            font-family: "Mochiy Pop P One", sans-serif;
+            
 
-            color: #FFF; /* 初始文字颜色，可以被 text-shadow 覆盖一部分 */
-            cursor: default; /* 鼠标样式 */
+            /*color: #FFF; /* 初始文字颜色，可以被 text-shadow 覆盖一部分 */
+            /*cursor: default; /* 鼠标样式 */
             /* 初始可以给一个固定的文字阴影，或者不给 */
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.5); 
+            /*text-shadow: 2px 2px 5px rgba(0,0,0,0.5); 
 
         /* 你需要为图上的其他文字元素都创建类似的 CSS 规则 */
         /* 比如 .text-100-percent, .text-maid 等 */
@@ -107,75 +109,90 @@
 </head>
 
 <body>
-        <img src="images/斜矩形装饰.png" alt="斜矩形装饰" class="artwork-container">
+        <img src="images/斜矩形装饰.png" alt="斜矩形装饰" class="artwork-container ">
         <img src="images/半调图像.png" alt="半调图像" class="半调图像">
 
-    
+        <div class="interactiveShadow "> 
+            <img src="images/立绘.png" alt="猫耳女仆" class="character-image interactiveDropShadow">
 
-        <img src="images/立绘.png" alt="猫耳女仆" class="character-image ">
+            <div class="text-nekomimi interactiveTextShadow">猫耳メイド
+            
+                <div class="text-tags">
+                animal_ears,blue<br>
+                :<,cat_girl<br>
+                head_tilt,masterpiece<br>
+                looking_at_viewer<br>
+                ( ´ρ`)
+                </div>
 
-        <div class="interactiveShadow text-nekomimi">猫耳メイド</div>
-        
-        <div class="interactiveShadow text-tags">
-            animal_ears,blue<br>
-            :<,cat_girl<br>
-            head_tilt,masterpiece<br>
-            looking_at_viewer<br>
-            ( ´ρ`)
+            </div>
+
         </div>
+<script>
+    function applyInteractiveShadow(selector, shadowType = 'text') {
+        const elements = document.querySelectorAll(selector);
 
+        if (elements.length > 0) {
+            elements.forEach(function(currentElement) {
+                // 鼠标移动事件处理
+                document.addEventListener('mousemove', function(mouseMoveEvent) {
+                    const mouseX = mouseMoveEvent.clientX;
+                    const mouseY = mouseMoveEvent.clientY;
 
-    <script>
-    // 获取所有 class 为 'interactiveShadow' 的元素
-    const elementsWithShadow = document.querySelectorAll('.interactiveShadow');
+                    const rect = currentElement.getBoundingClientRect();
+                    const elementCenterX = rect.left + rect.width / 2;
+                    const elementCenterY = rect.top + rect.height / 2;
 
-    // 检查是否找到了元素
-    if (elementsWithShadow.length > 0) { // 检查 NodeList 的长度是否大于 0
-        // 为每个找到的元素添加鼠标移动和离开的事件监听
-        elementsWithShadow.forEach(function(currentElement) { // 将参数名改为 currentElement 或 element
+                    const sensitivity = 30; // 调整这个值来改变敏感度
+                    let offsetX = (elementCenterX - mouseX) / sensitivity;
+                    let offsetY = (elementCenterY - mouseY) / sensitivity;
 
-            // --- 鼠标移动事件处理 ---
-            document.addEventListener('mousemove', function(mouseMoveEvent) { // 参数名改为 mouseMoveEvent，以区分
-                // 1. 获取鼠标在视口中的坐标
-                const mouseX = mouseMoveEvent.clientX;
-                const mouseY = mouseMoveEvent.clientY;
+                    const maxOffset = 20; // 阴影最大偏移量
+                    offsetX = Math.max(-maxOffset, Math.min(maxOffset, offsetX));
+                    offsetY = Math.max(-maxOffset, Math.min(maxOffset, offsetY));
 
-                // 2. 获取当前元素的位置和中心点
-                const rect = currentElement.getBoundingClientRect(); // 使用 currentElement
-                const elementCenterX = rect.left + rect.width / 2;
-                const elementCenterY = rect.top + rect.height / 2;
+                    const blurRadius = 8; // 模糊半径
+                    // 阴影颜色可以根据元素类型或背景调整
+                    const shadowColor = shadowType === 'box' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.5)';
+                    // 对于 box-shadow，还可以有 spread-radius (第四个长度值)
+                    const spreadRadius = shadowType === 'box' ? 2 : 0; // 给 box-shadow 加一点扩散
 
-                // 3. 计算光源（鼠标）相对于元素中心的方向和程度
-                const sensitivity = 30;
-                let offsetX = (elementCenterX - mouseX) / sensitivity;
-                let offsetY = (elementCenterY - mouseY) / sensitivity;
+                    if (shadowType === 'text') {
+                        currentElement.style.textShadow = `${offsetX}px ${offsetY}px ${blurRadius}px ${shadowColor}`;
+                    } else if (shadowType === 'box') {
+                        currentElement.style.boxShadow = `${offsetX}px ${offsetY}px ${blurRadius}px ${spreadRadius}px ${shadowColor}`;
+                    } else if (shadowType === 'drop') { // 实验性：使用 filter: drop-shadow
+                        currentElement.style.filter = `drop-shadow(${offsetX}px ${offsetY}px ${blurRadius}px ${shadowColor})`;
+                    }
+                });
 
-                // 4. (可选) 限制阴影的最大偏移量
-                const maxOffset = 25;
-                offsetX = Math.max(-maxOffset, Math.min(maxOffset, offsetX));
-                offsetY = Math.max(-maxOffset, Math.min(maxOffset, offsetY));
-
-                // 5. 设置阴影的模糊半径和颜色
-                const blurRadius = 4;
-                const shadowColor = 'rgba(0, 0, 0, 0.4)';
-
-                // 6. 应用文字阴影 (text-shadow) 到当前元素
-                currentElement.style.textShadow = `${offsetX}px ${offsetY}px ${blurRadius}px ${shadowColor}`;
+                // 鼠标离开元素事件处理
+                document.addEventListener('mouseleave', function() {
+                    if (shadowType === 'text') {
+                        currentElement.style.textShadow = 'none';
+                    } else if (shadowType === 'box') {
+                        currentElement.style.boxShadow = 'none';
+                    } else if (shadowType === 'drop') {
+                        currentElement.style.filter = 'none';
+                    }
+                });
             });
-
-            // --- (可选) 鼠标离开元素事件处理 ---
-            currentElement.addEventListener('mouseleave', function() {
-                // 恢复到一个固定的阴影或者清除它
-                // currentElement.style.textShadow = '2px 2px 5px rgba(0,0,0,0.5)';
-                // 或者完全清除
-                currentElement.style.textShadow = 'none'; // 鼠标离开时清除阴影
-            });
-        });
-    } else {
-        // 这里可以保留原来的 console.error，或者修改一下提示信息
-        console.error("未能找到任何 class 为 'interactiveShadow' 的元素。");
+        } else {
+            console.warn(`未找到任何 class 为 '${selector}' 的元素。`);
+        }
     }
-    </script>
+
+    // 应用文字阴影到带有 .interactiveTextShadow class 的元素
+    applyInteractiveShadow('.interactiveTextShadow', 'text');
+
+    // 应用盒子阴影到带有 .interactiveBoxShadow class 的元素 (比如你的图片)
+    applyInteractiveShadow('.interactiveBoxShadow', 'box');
+
+    // (可选) 如果你想尝试 drop-shadow (对透明PNG效果好)
+    applyInteractiveShadow('.interactiveDropShadow', 'drop');
+    // 然后给你的 img 标签加上 class="interactiveDropShadow"
+
+</script>
 
 
 </body>
