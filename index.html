@@ -7,6 +7,25 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&display=swap" rel="stylesheet">
+
+
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <script type="importmap">
+    {
+      "imports": {
+        "@material/web/": "https://esm.run/@material/web/"
+      }
+    }
+  </script>
+  
+  
+  <script type="module">
+    import '@material/web/all.js';
+    import {styles as typescaleStyles} from '@material/web/typography/md-typescale-styles.js';
+
+    document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+    
+  </script>
     
 
     <style>
@@ -24,9 +43,38 @@
             filter: grayscale(1) contrast(300%) brightness(1.1);
             overflow: hidden
             
+            
+        }
+        #loader-overlay {
+            position: fixed; /* 固定定位，覆盖整个视口 */
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.9); /* 半透明白色背景 */
+            display: flex; /* 使用 flex 居中进度条 */
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; /* 确保在最上层 */
+            transition: opacity 0.5s ease-out; /* 淡出效果 */
         }
 
+        /* 主内容区 */
+        #main-content {
+            padding: 20px;
+            opacity: 0; /* 初始时主要内容透明 */
+            transition: opacity 0.5s ease-in; /* 淡入效果 */
+        }
+
+        #main-content.loaded {
+            opacity: 1; /* 当加载完成后，内容变为不透明 */
+        }
+
+
         .artwork-container {
+            position: fixed; /* 固定定位，覆盖整个视口 */
+            top: 0;
+            left: 0;
             margin: 0; /* 去掉默认的 body 边距 */
             padding: 0;
             object-fit: fill; /* 关键：让图片填充整个容器，允许变形 */
@@ -90,6 +138,7 @@
             line-height: 1.4; /* 调整行间距 */
         }
         .interactiveShadow {
+            text-shadow: 5px 5px 4px rgba(0,0,0,0.3);
             
 
             /*color: #FFF; /* 初始文字颜色，可以被 text-shadow 覆盖一部分 */
@@ -103,16 +152,29 @@
 
         /* 你需要为图上的其他文字元素都创建类似的 CSS 规则 */
         /* 比如 .text-100-percent, .text-maid 等 */
+        .pulse {
+            animation: pulse 3s infinite;
+            }
+
+
+        </style>
+
+
         
     </style>
 
 </head>
 
 <body>
-        <img src="images/斜矩形装饰.png" alt="斜矩形装饰" class="artwork-container ">
-        <img src="images/半调图像.png" alt="半调图像" class="半调图像">
 
-        <div class="interactiveShadow "> 
+        <div id="loader-overlay">
+        <md-linear-progress value="0" indeterminate="false"></md-linear-progress>
+        </div>
+
+
+        <div id="main-content"></div>
+            <img src="images/斜矩形装饰.png" alt="斜矩形装饰" class="artwork-container ">
+            <img src="images/半调图像.png" alt="半调图像" class="半调图像">
             <img src="images/立绘.png" alt="猫耳女仆" class="character-image interactiveDropShadow">
 
             <div class="text-nekomimi interactiveTextShadow">猫耳メイド
@@ -124,12 +186,109 @@
                 looking_at_viewer<br>
                 ( ´ρ`)
                 </div>
-
             </div>
-
         </div>
+
 <script>
-    function applyInteractiveShadow(selector, shadowType = 'text') {
+    document.addEventListener('DOMContentLoaded', function() {
+    // DOM 内容加载完成后执行
+
+    const progressBar = document.querySelector('md-circular-progress');
+    const loaderOverlay = document.getElementById('loader-overlay');
+    const mainContent = document.getElementById('main-content');
+
+    let progressValue = 0;
+    let progressInterval;
+
+    function updateProgress(targetValue, duration = 500) {
+        // 清除之前的间隔，以防万一
+        if (progressInterval) {
+            clearInterval(progressInterval);
+        }
+
+        const increment = (targetValue - progressValue) / (duration / 50); // 每50ms更新一次
+
+        progressInterval = setInterval(() => {
+            progressValue += increment;
+            if ((increment > 0 && progressValue >= targetValue) || (increment < 0 && progressValue <= targetValue)) {
+                progressValue = targetValue; // 确保精确到达目标值
+                clearInterval(progressInterval);
+            }
+            if (progressBar) {
+                progressBar.value = Math.min(1, Math.max(0, progressValue)); // 确保 value 在 0-1 之间
+            }
+        }, 50);
+    }
+
+    // 1. DOMContentLoaded 时，可以认为加载了初始结构，给一个初始进度
+    //    并开始一个缓慢的“假”进度推进，模拟资源加载
+    console.log("DOM Content Loaded");
+    updateProgress(0.1); // 假设 DOM 加载完成占 10%
+
+    // 模拟一些加载过程，缓慢增加到比如 0.8
+    // 这个时间可以根据你的页面大致加载时间调整
+    // 或者你也可以在 DOMContentLoaded 后就直接跳到比如 0.5
+    setTimeout(() => {
+        if (progressValue < 0.8) { // 只有在还没到目标时才更新
+            console.log("Simulating further loading...");
+            updateProgress(0.8, 2000); // 在2秒内从当前进度到0.8
+        }
+    }, 100); // DOMContentLoaded 后 200ms 开始模拟
+
+    // 2. window.onload 时，所有资源加载完毕
+    window.addEventListener('onload', function() {
+        console.log("Window Loaded - All resources finished");
+
+        // 确保之前的模拟进度完成
+        if (progressInterval) {
+            clearInterval(progressInterval);
+        }
+        progressValue = progressBar ? progressBar.value : 0.8; // 获取当前实际进度
+
+        // 快速将进度条设置为 100%
+        updateProgress(1, 300); // 在0.3秒内从当前进度到1
+
+        // 稍作延迟后隐藏加载层，显示主内容
+        setTimeout(() => {
+            if (loaderOverlay) {
+                loaderOverlay.style.opacity = '0';
+                // 等待淡出动画完成后再将其 display:none，以便它不再占据交互区域
+                setTimeout(() => {
+                    loaderOverlay.style.display = 'none';
+                }, 500); // 匹配 CSS 中的 transition duration
+            }
+            if (mainContent) {
+                mainContent.classList.add('loaded');
+            }
+            console.log("Loader hidden, main content shown.");
+        }, 100); // 在进度条满后0.5秒执行
+    });
+
+    // --- 备用方案：如果 onload 事件由于某些原因未触发或延迟过久 ---
+    // 你可以设置一个最长等待时间，之后无论如何都显示内容
+    const maxLoadTime = 5000; // 8秒
+    setTimeout(() => {
+        if (loaderOverlay && loaderOverlay.style.display !== 'none') { // 如果加载层还在显示
+            console.warn("Max load time reached. Forcing content display.");
+            if (progressInterval) {
+                clearInterval(progressInterval);
+            }
+            if (progressBar) progressBar.value = 1; // 强制满进度
+
+            loaderOverlay.style.opacity = '0';
+            setTimeout(() => {
+                loaderOverlay.style.display = 'none';
+            }, 500);
+            if (mainContent) {
+                mainContent.classList.add('loaded');
+            }
+        }
+    }, maxLoadTime);
+
+});
+</script>
+<script>
+    function applyInteractiveShadow(selector, shadowType = 'text',defaultShadowOnLeave = 'none') {
         const elements = document.querySelectorAll(selector);
 
         if (elements.length > 0) {
@@ -169,11 +328,12 @@
                 // 鼠标离开元素事件处理
                 document.addEventListener('mouseleave', function() {
                     if (shadowType === 'text') {
-                        currentElement.style.textShadow = 'none';
+                        
+                        currentElement.style.textShadow = '';
                     } else if (shadowType === 'box') {
-                        currentElement.style.boxShadow = 'none';
+                        currentElement.style.boxShadow = '';
                     } else if (shadowType === 'drop') {
-                        currentElement.style.filter = 'none';
+                        currentElement.style.filter = '';
                     }
                 });
             });
