@@ -7,9 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&display=swap" rel="stylesheet">
-
-
-      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
   <script type="importmap">
     {
       "imports": {
@@ -27,195 +26,6 @@
     
   </script>
     
-
-    <style>
-        /* 这里是 CSS 代码 */
-        body,html {
-            margin: 0; /* 去掉默认的 body 边距 */
-            padding: 0;
-            background-color: #1a75d2; /* 一个示例蓝色，你需要从你的图中取色 */
-            /* 如果用斜纹背景图: background-image: url('images/stripes_pattern.png'); */
-            /* display: flex; /* 方便居中内容 */
-            /* justify-content: center; */
-            /* align-items: center; */
-            min-height: 100vh;  /* 让 body 至少和视口一样高 */
-            height: 100%;   
-            overflow: hidden
-            
-            
-        }
-    </style>
-    
-    <style> /* 加载覆盖层 */
-        #loader-overlay {
-            position: fixed; /* 固定定位，覆盖整个视口 */
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: rgba(255, 255, 255, 0.9); /* 半透明白色背景 */
-            display: flex; /* 使用 flex 居中进度条 */
-            justify-content: center;
-            align-items: center;
-            z-index: 9999; /* 确保在最上层 */
-            transition: opacity 0.5s ease-out; /* 淡出效果 */
-        }
-        /* 主内容区 */
-        #main-content {
-            padding: 20px;
-            opacity: 0; /* 初始时主要内容透明 */
-            transition: opacity 0.5s ease-in; /* 淡入效果 */
-        }
-
-        #main-content.loaded {
-            opacity: 1; /* 当加载完成后，内容变为不透明 */
-        }
-    </style>
-
-    <style>
-
-
-        
-        body.阈值效果 {
-            filter: grayscale(1) contrast(300%) brightness(1.1);   
-        }
-
-
-        #半调图像{
-            position: absolute;
-            top: 0; /* 根据需要调整 */
-            left: 0; /* 根据需要调整 */
-            mix-blend-mode: overlay;
-            display: none; /* 初始隐藏 */
-            z-index: 10; /* 确保在其他内容之下 */
-            pointer-events: none; /* 确保不会阻止鼠标事件 */
-            transition: opacity 0.5s ease-out;
-        }
-        #半调效果{
-
-
-        }
-
-        #showImageButton { /* 或者你可以给这个 button 一个特定的 class */
-            position:relative;
-            align-items: center;
-            top: 10%; /* 根据需要调整 */
-            object-fit: contain; /* 根据需要调整 */
-
-            background-color: transparent; /* 关键：使按钮背景透明 */
-            border: none;                /* 关键：移除按钮的边框 */
-            padding: 0;                  /* 关键：移除按钮的内边距 */
-            cursor: pointer;             /* 保持鼠标指针为手型 */
-            outline: none;               /* (可选) 移除点击时的焦点轮廓，但要注意可访问性 */
-
-            /* 如果你还想让按钮本身没有尺寸，完全由图片决定 */
-            display: inline-flex;  /* 或者 inline-block */
-            /* align-items: center;    */
-             justify-content: center; 
-            /* line-height: 0;         */ /* 尝试移除文字基线可能带来的额外空间 */
-        }
-
-    </style>
-    <style>/*边栏*/
-        .sidebar {
-            position: fixed; /* 固定定位 */
-            top: 0;
-            left: 0;
-            width: 30px; /* 根据需要调整宽度 */
-            height: 100vh; /* 高度占满视口 */
-            background-color: rgba(255, 255, 255, 0.4); /* 半透明背景 */
-            backdrop-filter: blur(10px); /* 背景模糊效果 */
-            z-index: 1000; /* 确保在最上层 */
-            padding: 20px; /* 内边距 */
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
-        }
-
-     </style>
-
-    <style>
-
-        .mochiy-pop-p-one-regular {
-            font-family: "Mochiy Pop P One", sans-serif;
-            font-weight: 400;
-            font-style: normal;
-        }
-
-        .artwork-container {
-            position: fixed; /* 固定定位，覆盖整个视口 */
-            top: 0;
-            left: 0;
-            margin: 0; /* 去掉默认的 body 边距 */
-            padding: 0;
-            object-fit: fill; /* 关键：让图片填充整个容器，允许变形 */
-            /*display: block; /* 移除图片下方的微小空白 (可选) */
-            width: 100vw; /* 假设你的作品宽度，或者用百分比 */
-            height:100vh;  /* 假设你的作品高度，或者用百分比 */
-            /*border: 1px solid white;  边框可选 */
-            margin: auto; /* 如果想让容器在 body 中居中 */
-
-
-        }
-
-
-        .character-image {
-            position: fixed;
-            object-fit: contain; /* 保持图片比例 */
-            object-position: bottom right; /* 图片位置 */
-            bottom: -10px; /* 根据需要调整 */
-            right: 20px;
-            /*border: 1px solid white;*/
-
-            width: 60vw; 
-            height:100vh;
-            right: 0; /* 示例值 */
-            /* z-index: 10; */ /* 确保在某些文字之上 */
-        }
-
-        .text-nekomimi {
-            font-family: "Mochiy Pop P One", sans-serif;
-            position: absolute;
-            top: 50px;    /* 示例值 */
-            left: 80px;   /* 示例值 */
-            font-size: 120px; /* 示例值 */
-            color: white;
-            font-weight: bold;
-            /* z-index: 20; */ /* 确保在图片之上或之下，根据需要调整 */
-        }
-
-        .text-tags {
-            font-family: "Mochiy Pop P One", sans-serif;
-            position: relative;
-            top: 0px;   /* 示例值 */
-            left: 0px;   /* 示例值 */
-            font-size: 24px;  /* 示例值 */
-            color: #ADD8E6; /* 浅蓝色示例 */
-            line-height: 1.4; /* 调整行间距 */
-        }
-        .interactiveShadow {
-            text-shadow: 7px 7px 8px rgba(0,0,0,0.5);
-            
-
-            /*color: #FFF; /* 初始文字颜色，可以被 text-shadow 覆盖一部分 */
-            /*cursor: default; /* 鼠标样式 */
-            /* 初始可以给一个固定的文字阴影，或者不给 */
-            /*text-shadow: 2px 2px 5px rgba(0,0,0,0.5); 
-
-        /* 你需要为图上的其他文字元素都创建类似的 CSS 规则 */
-        /* 比如 .text-100-percent, .text-maid 等 */
-        }
-
-        /* 你需要为图上的其他文字元素都创建类似的 CSS 规则 */
-        /* 比如 .text-100-percent, .text-maid 等 */
-        .pulse {
-            animation: pulse 3s infinite;
-            }
-
-
-    </style>
-
-
-        
-    </style>
 
 </head>
 
@@ -240,12 +50,27 @@
                         ( ´ρ`)
                     </div>
                 </div>
-                    <div class="sidebar">
-
-                        <button id="showImageButton"  >
-                        <img src="images/太阳.png" alt="半调效果" >
-                        
-                       </button>
+                <div class="sidebar">
+                    <div class="sidebar-header">
+                        <img src="images/头像.png" alt="头像" class="profile-picture">
+                        <h2>Camellia895</h2>
+                    </div>
+                    <nav class="sidebar-nav">
+                        <ul>
+                            <li><a href="https://camellia895.github.io/">主页</a></li>
+                            <li><a href="#">作品集</a></li>
+                            <li><a href="#">关于我</a></li>
+                            <li><a href="#">联系方式</a></li>
+                        </ul>
+                    </nav>
+                    <div class="sidebar-social">
+                        <!-- 社交媒体图标占位符 -->
+                        <a href="#"><img src="images/箭头.png" alt="社交媒体1" class="social-icon"></a>
+                        <a href="#"><img src="images/箭头.png" alt="社交媒体2" class="social-icon"></a>
+                    </div>
+                    <button id="showImageButton">
+                        <img src="images/太阳.png" alt="半调效果">
+                    </button>
                 </div>
             </div>
 
