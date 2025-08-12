@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'AaCute';
-    src: url('font/AaCute.woff') format('woff');
+    src: url('../font/AaCute.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
