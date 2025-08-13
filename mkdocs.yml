@@ -16,7 +16,13 @@ nav:
     - ME/description.md
     - ME/experience.md
     - ME/daily-necessities.md
-
+  - 小说:
+    - write\642个可写的题目.md
+    - write\666个可写的题目.md
+    - write\化粪池.md
+    - write\魔法火箭.md
+    - write\我为什么会做这样的梦.md
+    
 # [UI]
 # [top]
 theme:
@@ -77,7 +83,7 @@ theme:
     # https://squidfunk.github.io/mkdocs-material/setup/adding-a-git-repository/#code-actions
     - content.action.edit
   language: zh # 一些提示性的文字会变成中文
-  icon:
+icon:
     # [添加 GitHub 仓库]
     # https://squidfunk.github.io/mkdocs-material/setup/adding-a-git-repository/#repository-icon
     repo: fontawesome/brands/github
