@@ -29,9 +29,9 @@ nav:
   - comfyui:
     - comfyui/index.md
     - comfyui-nodes:
-      - comfyui/Comfyui-workflows/分类工作流节点编写.md
-      - comfyui/Comfyui-workflows/图像批生产工作流节点编写.md   
-      - comfyui/Comfyui-workflows/wufucs节点编写.md   
+      - comfyui/Comfyui-nodes/分类工作流节点编写.md
+      - comfyui/Comfyui-nodes/图像批生产工作流节点编写.md   
+      - comfyui/Comfyui-nodes/wufucs节点编写.md   
     - comfyui-workflows:
       - comfyui/Comfyui-workflows/分类工作流.md
       - comfyui/Comfyui-workflows/图像批生产工作流.md
