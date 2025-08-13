@@ -22,7 +22,7 @@ nav:
     - write\化粪池.md
     - write\魔法火箭.md
     - write\我为什么会做这样的梦.md
-    
+
 # [UI]
 # [top]
 theme:
@@ -53,10 +53,7 @@ theme:
       accent: orange
       toggle:
         icon: material/weather-sunny
-        name: 切换至日间模式
-    
-
-      
+        name: 切换至日间模式     
   features:
     # 使用 Tab 来进行分类
     # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#navigation-tabs
@@ -83,7 +80,7 @@ theme:
     # https://squidfunk.github.io/mkdocs-material/setup/adding-a-git-repository/#code-actions
     - content.action.edit
   language: zh # 一些提示性的文字会变成中文
-icon:
+  icon:
     # [添加 GitHub 仓库]
     # https://squidfunk.github.io/mkdocs-material/setup/adding-a-git-repository/#repository-icon
     repo: fontawesome/brands/github
