@@ -9,22 +9,23 @@ site_description: Camellia895的个人网站
 nav:
   - 我:
     - ME/index.md
-  - 小说:
+  - 小说线:
     - write/index.md
     - write/642questions.md
     - write/666questions.md
     - write/化粪池.md
     - write/魔法火箭.md
     - write/我为什么会做这样的梦？.md
-  - 教学: 
+  - 教学线: 
     - teach/index.md
     - 第一次上台讲课:
       - teach/搭船的鸟 课案 2.md
       - teach/搭船的鸟 逐字稿.md
       - teach/搭船的鸟 感想.md
-  - PS:
-    - 闪光爱丽丝.md
-    
+  - 美术线:
+      - PS/index.md
+      - PS:
+        - 闪光爱丽丝.md
 
 
 
