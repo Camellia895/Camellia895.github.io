@@ -9,13 +9,6 @@ site_description: Camellia895的个人网站
 nav:
   - 我:
     - ME/index.md
-    - ME/introduction.md
-    - ME/profile.md
-    - ME/contact.md
-    - ME/account.md
-    - ME/description.md
-    - ME/experience.md
-    - ME/daily-necessities.md
   - 小说:
     - write/index.md
     - write/642questions.md
@@ -23,6 +16,16 @@ nav:
     - write/化粪池.md
     - write/魔法火箭.md
     - write/我为什么会做这样的梦？.md
+  - 教学: 
+    - teach/index.md
+    - teach/搭船的鸟 课案2.md
+    - teach/搭船的鸟 逐字稿.md
+
+
+  
+
+
+
 
 # [UI]
 # [top]
