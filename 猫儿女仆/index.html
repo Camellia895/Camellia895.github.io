@@ -34,8 +34,7 @@
         <md-linear-progress value="0" indeterminate="false"></md-linear-progress>
         </div>
         <div class="interactiveShadow">
-
-            <div id="main-content">
+            <div id="main-content-area">
                 <img src="images/半调图像.png" alt="半调图像" id="半调图像">
                 <img src="images/斜矩形装饰.png" alt="斜矩形装饰" class="artwork-container ">
                 <img src="images/图层-5.png" alt="猫耳女仆" class="character-image interactiveDropShadow">
@@ -50,30 +49,37 @@
                         ( ´ρ`)
                     </div>
                 </div>
-                <div class="sidebar">
-                    <div class="sidebar-header">
-                        <img src="images/头像.png" alt="头像" class="profile-picture">
-                        <h2>Camellia895</h2>
+                <div class="text-block-4">
+                    <div class="text-100-percent interactiveTextShadow">100%</div>
+                    <div class="text-group-3">
+                        <div class="text-fujoukei interactiveTextShadow">不正経</div>
+                        <div class="text-unconventional interactiveTextShadow">unconventional</div>
                     </div>
-                    <nav class="sidebar-nav">
-                        <ul>
-                            <li><a href="https://camellia895.github.io/">主页</a></li>
-                            <li><a href="#">作品集</a></li>
-                            <li><a href="#">关于我</a></li>
-                            <li><a href="#">联系方式</a></li>
-                        </ul>
-                    </nav>
-                    <div class="sidebar-social">
-                        <!-- 社交媒体图标占位符 -->
-                        <a href="#"><img src="images/箭头.png" alt="社交媒体1" class="social-icon"></a>
-                        <a href="#"><img src="images/箭头.png" alt="社交媒体2" class="social-icon"></a>
-                    </div>
-                    <button id="showImageButton">
-                        <img src="images/太阳.png" alt="半调效果">
-                    </button>
+                    <div class="text-maid interactiveTextShadow">maid</div>
                 </div>
             </div>
-
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <img src="images/头像.png" alt="头像" class="profile-picture">
+                    <h2>Camellia895</h2>
+                </div>
+                <nav class="sidebar-nav">
+                    <ul>
+                        <li><a href="https://camellia895.github.io/">主页</a></li>
+                        <li><a href="#">作品集</a></li>
+                        <li><a href="#">关于我</a></li>
+                        <li><a href="#">联系方式</a></li>
+                    </ul>
+                </nav>
+                <div class="sidebar-social">
+                    <!-- 社交媒体图标占位符 -->
+                    <a href="#"><img src="images/箭头.png" alt="社交媒体1" class="social-icon"></a>
+                    <a href="#"><img src="images/箭头.png" alt="社交媒体2" class="social-icon"></a>
+                </div>
+                <button id="showImageButton">
+                    <img src="images/太阳.png" alt="半调效果">
+                </button>
+            </div>
         </div>
 
     <script>
@@ -113,7 +119,7 @@
 
     const progressBar = document.querySelector('md-circular-progress');
     const loaderOverlay = document.getElementById('loader-overlay');
-    const mainContent = document.getElementById('main-content');
+    const mainContent = document.getElementById('main-content-area'); /* 更新为新的ID */
 
     let progressValue = 0;
     let progressInterval;

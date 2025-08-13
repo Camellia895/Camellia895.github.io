@@ -6,6 +6,34 @@
 }
 
 /* 这里是 CSS 代码 */
+@font-face {
+    font-family: 'PosterCompressed-Regular';
+    src: url('../font/PosterCompressed-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'VD-LogoG-Extra-P';
+    src: url('../font/VD-LogoG-Extra-P.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Comic Sans MS';
+    src: url('../font/comic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Book Antiqua';
+    src: url('../font/BKANT.TTF') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body,html {
     margin: 0; /* 去掉默认的 body 边距 */
     padding: 0;
@@ -16,9 +44,7 @@ body,html {
     /* align-items: center; */
     min-height: 100vh;  /* 让 body 至少和视口一样高 */
     height: 100%;   
-    overflow: hidden
-    
-    
+    overflow: hidden;
 }
 
 /* 加载覆盖层 */
@@ -35,14 +61,20 @@ body,html {
     z-index: 9999; /* 确保在最上层 */
     transition: opacity 0.5s ease-out; /* 淡出效果 */
 }
+
 /* 主内容区 */
-#main-content {
-    padding: 20px;
-    opacity: 0; /* 初始时主要内容透明 */
+#main-content-area {
+    position: absolute;
+    top: 0;
+    left: 120px; /* 边栏宽度 */
+    width: calc(100vw - 120px); /* 减去边栏宽度 */
+    height: 100vh;
+    overflow: hidden;
+    opacity: 1; /* 初始时主要内容透明，暂时设置为1方便调试 */
     transition: opacity 0.5s ease-in; /* 淡入效果 */
 }
 
-#main-content.loaded {
+#main-content-area.loaded {
     opacity: 1; /* 当加载完成后，内容变为不透明 */
 }
 
@@ -186,45 +218,76 @@ body.阈值效果 #showImageButton img {
 }
 
 .artwork-container {
-    position: fixed; /* 固定定位，覆盖整个视口 */
+    position: absolute; /* 相对于 #main-content-area 定位 */
     top: 0;
     left: 0;
-    margin: 0; /* 去掉默认的 body 边距 */
-    padding: 0;
+    width: 100%; /* 填充父容器 */
+    height: 100%; /* 填充父容器 */
     object-fit: fill; /* 关键：让图片填充整个容器，允许变形 */
-    /*display: block; /* 移除图片下方的微小空白 (可选) */
-    width: 100vw; /* 假设你的作品宽度，或者用百分比 */
-    height:100vh;  /* 假设你的作品高度，或者用百分比 */
-    /*border: 1px solid white;  边框可选 */
-    margin: auto; /* 如果想让容器在 body 中居中 */
-
-
+    z-index: 1; /* 确保在背景层 */
 }
 
 
 .character-image {
-    position: fixed;
+    position: absolute; /* 相对于 #main-content-area 定位 */
     object-fit: contain; /* 保持图片比例 */
     object-position: bottom right; /* 图片位置 */
     bottom: -10px; /* 根据需要调整 */
-    right: 20px;
-    /*border: 1px solid white;*/
-
+    right: 0; /* 示例值 */
     width: 60vw; 
     height:100vh;
-    right: 0; /* 示例值 */
-    /* z-index: 10; */ /* 确保在某些文字之上 */
+    z-index: 5; /* 确保在背景之上，文字之下 */
 }
 
 .text-nekomimi {
     font-family: "Mochiy Pop P One", sans-serif;
-    position: absolute;
+    position: absolute; /* 相对于 #main-content-area 定位 */
     top: 50px;    /* 示例值 */
-    left: 200px;   /* 示例值 */
+    left: 80px;   /* 示例值，调整以适应新容器 */
     font-size: 120px; /* 示例值 */
     color: white;
     font-weight: bold;
-    /* z-index: 20; */ /* 确保在图片之上或之下，根据需要调整 */
+    z-index: 20; /* 确保在图片之上 */
+}
+
+.text-100-percent {
+    font-family: 'PosterCompressed-Regular', sans-serif;
+    position: absolute;
+    top: 400px; /* 根据图片调整 */
+    left: 80px; /* 根据图片调整 */
+    font-size: 150px; /* 根据图片调整 */
+    color: rgba(255, 255, 255, 0.7); /* 半透明白色 */
+    z-index: 20; /* 确保在图片之上 */
+}
+
+.text-fujoukei {
+    font-family: 'VD-LogoG-Extra-P', sans-serif;
+    position: absolute;
+    top: 600px; /* 根据图片调整 */
+    left: 80px; /* 根据图片调整 */
+    font-size: 60px; /* 根据图片调整 */
+    color: rgba(255, 255, 255, 0.7); /* 半透明白色 */
+    z-index: 20; /* 确保在图片之上 */
+}
+
+.text-unconventional {
+    font-family: 'Comic Sans MS', cursive;
+    position: absolute;
+    top: 680px; /* 根据图片调整 */
+    left: 80px; /* 根据图片调整 */
+    font-size: 40px; /* 根据图片调整 */
+    color: rgba(255, 255, 255, 0.7); /* 半透明白色 */
+    z-index: 20; /* 确保在图片之上 */
+}
+
+.text-maid {
+    font-family: 'Book Antiqua', serif;
+    position: absolute;
+    top: 750px; /* 根据图片调整 */
+    left: 80px; /* 根据图片调整 */
+    font-size: 100px; /* 根据图片调整 */
+    color: rgba(255, 255, 255, 0.7); /* 半透明白色 */
+    z-index: 20; /* 确保在图片之上 */
 }
 
 .text-tags {
@@ -253,4 +316,14 @@ body.阈值效果 #showImageButton img {
 /* 比如 .text-100-percent, .text-maid 等 */
 .pulse {
     animation: pulse 3s infinite;
+}
+
+/* 响应式隐藏 */
+@media (max-width: 768px) {
+    .text-100-percent,
+    .text-fujoukei,
+    .text-unconventional,
+    .text-maid {
+        display: none;
     }
+}
