@@ -21,7 +21,6 @@ nav:
     - ME/thu-certificate.md
     - ME/daily-necessities.md
     - ME/support.md
-  - 讲稿:
   - 博客:
     - BLOG/index.md
     - BLOG/others.md
@@ -29,7 +28,6 @@ nav:
       - BLOG/Apple/mac-recommend.md
       - BLOG/Apple/ipad-recommend.md
   - 开发:
-    - 编程:
   - 研究:
     - RESEARCH/index.md
     - CG:
@@ -44,7 +42,6 @@ nav:
     - GPU:
       - RESEARCH/Gpu/gpu.md
       - RESEARCH/Gpu/cuda.md
-  - 二次元:
   - 随笔:
     - ESSAY/index.md
     - 随笔记:
