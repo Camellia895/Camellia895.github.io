@@ -16,25 +16,33 @@ nav:
     - write/化粪池.md
     - write/魔法火箭.md
     - write/我为什么会做这样的梦？.md
+
   - 教学线: 
     - teach/index.md
     - 第一次上台讲课:
       - teach/搭船的鸟 课案 2.md
       - teach/搭船的鸟 逐字稿.md
       - teach/搭船的鸟 感想.md
+
   - 美术线:
       - PS/index.md
       - PS:
         - PS/爱丽丝闪耀.md
+        - PS/猫儿女仆.md
+        - PS/浏览器封面.md
+        - PS/树下的铃兰.md
+
   - comfyui:
     - comfyui/index.md
     - comfyui-nodes:
       - comfyui/Comfyui-nodes/分类工作流节点编写.md
       - comfyui/Comfyui-nodes/图像批生产工作流节点编写.md   
       - comfyui/Comfyui-nodes/wufucs节点编写.md   
+
     - comfyui-workflows:
       - comfyui/Comfyui-workflows/分类工作流.md
       - comfyui/Comfyui-workflows/图像批生产工作流.md
+
 
 # [UI]
 # [top]
