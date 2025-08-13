@@ -1,9 +1,9 @@
 # [Info]
 # 左上角标题
-site_name: 杨希杰的个人网站
-site_url: https://yang-xijie.github.io
-site_author: 杨希杰
-site_description: 杨希杰的个人网站
+site_name: Camellia895的个人网站
+site_url: https://Camellia895.github.io
+site_author: Camellia895
+site_description: Camellia895的个人网站
 
 # [Navigtion]
 nav:
@@ -413,12 +413,12 @@ edit_uri: edit/main/docs/
 # [top-right corner]
 # [添加 GitHub 仓库]
 # https://squidfunk.github.io/mkdocs-material/setup/adding-a-git-repository/
-repo_url: https://github.com/Yang-Xijie/yang-xijie.github.io
-repo_name: yang-xijie.github.io
+repo_url: https://github.com/Camellia895/Camellia895.github.io
+repo_name: Camellia895.github.io
 # [bottom-left corner]
 # [版权说明]
 # https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-footer/#copyright-notice
-copyright: 杨希杰 CC-BY-4.0
+copyright: Camellia895 CC-BY-4.0
 # [bottom-right corner]
 extra:
   # [添加社交网络图标和链接]
@@ -426,24 +426,24 @@ extra:
   # 搜索图标：https://squidfunk.github.io/mkdocs-material/reference/icons-emojis/#search
   # name 会在鼠标悬浮时提示
   social: # icons
-    - name: GitHub | Yang-Xijie
+    - name: GitHub | Camellia895
       icon: fontawesome/brands/github
-      link: https://github.com/Yang-Xijie
-    - name: Bilibili | 杨希杰619
+      link: https://github.com/Camellia895
+    - name: Bilibili | Camellia895619
       icon: fontawesome/brands/bilibili
       link: https://space.bilibili.com/24502827
     - name: 小杰答疑群 QQ 796233390
       icon: fontawesome/brands/qq
-      link: https://yang-xijie.github.io/ME/qq-groups/
+      link: https://Camellia895.github.io/ME/qq-groups/
     - name: 小杰水群 QQ 824114857
       icon: fontawesome/brands/qq
-      link: https://yang-xijie.github.io/ME/qq-groups/
-    - name: 小红书 | 杨希杰
+      link: https://Camellia895.github.io/ME/qq-groups/
+    - name: 小红书 | Camellia895
       icon: fontawesome/solid/images
       link: https://www.xiaohongshu.com/user/profile/61be0cc10000000021024369
     - name: 打赏支持
       icon: fontawesome/solid/mug-saucer
-      link: https://yang-xijie.github.io/ME/support/
+      link: https://Camellia895.github.io/ME/support/
 
 # [Extensions]
 plugins:
