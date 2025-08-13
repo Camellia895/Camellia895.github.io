@@ -23,6 +23,7 @@ theme:
   name: material
   # [切换日间模式和夜间模式]
   # https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#color-palette-toggle
+  font: false
   palette:
     # 日间模式
     - scheme: default
@@ -44,6 +45,7 @@ theme:
       toggle:
         icon: material/weather-sunny
         name: 切换至日间模式
+    
 
       
   features:
