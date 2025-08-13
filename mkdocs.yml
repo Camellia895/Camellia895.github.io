@@ -13,14 +13,9 @@ nav:
     - ME/profile.md
     - ME/contact.md
     - ME/account.md
-    - ME/qq-groups.md
     - ME/description.md
-    - ME/ability.md
     - ME/experience.md
-    - ME/thu-curriculum.md
-    - ME/thu-certificate.md
     - ME/daily-necessities.md
-    - ME/support.md
 
 # [UI]
 # [top]
@@ -49,6 +44,8 @@ theme:
       toggle:
         icon: material/weather-sunny
         name: 切换至日间模式
+
+      
   features:
     # 使用 Tab 来进行分类
     # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#navigation-tabs
@@ -168,3 +165,4 @@ extra_css:
   - mkdocs/css/no-footer.css
   # 无序列表符号自定义
   - mkdocs/css/unordered-list-symbols.css
+  - mkdocs/css/kawaii.css

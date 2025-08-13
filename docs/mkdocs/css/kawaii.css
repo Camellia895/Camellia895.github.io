@@ -1,0 +1,7 @@
+/* docs/extra.css */
+@font-face {
+  font-family: "AaCute"; /* 定义你的字体名称 */
+  src: url("../fonts/AaCute.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
