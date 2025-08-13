@@ -26,6 +26,15 @@ nav:
       - PS/index.md
       - PS:
         - PS/爱丽丝闪耀.md
+  - comfyui:
+    - comfyui/index.md
+    - comfyui-nodes:
+      - comfyui/Comfyui-workflows/分类工作流节点编写.md
+      - comfyui/Comfyui-workflows/图像批生产工作流节点编写.md    
+    - comfyui-workflows:
+      - comfyui/Comfyui-workflows/分类工作流.md
+      - comfyui/Comfyui-workflows/图像批生产工作流.md
+
        
   
 
