@@ -24,6 +24,10 @@ theme:
   # [切换日间模式和夜间模式]
   # https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#color-palette-toggle
   font: false
+  custom_dir: overrides
+  icon:
+    logo: images/头像-缩小.jpg # 或者 img/logo.png, img/logo.jpg
+    favicon: images/头像-缩小.jpg
   palette:
     # 日间模式
     - scheme: default
