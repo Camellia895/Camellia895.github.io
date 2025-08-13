@@ -168,10 +168,6 @@ nav:
       - REPRODUCE/lyrics/watagumo.md
     - 诗:
       - REPRODUCE/poem/poems.md
-  - 网站:
-    # 访客打开网站第一个看到的是 docs/index.md
-    # 构建网站时，不用管报错 "The following pages exist in the docs directory, but are not included in the "nav" configuration: index.md"
-    # 如果访客之后想要重新看到这个界面，可以在 docs/WEBSITE/index.md 找到
 
 # [UI]
 # [top]
