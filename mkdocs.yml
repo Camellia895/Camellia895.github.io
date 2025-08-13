@@ -167,4 +167,4 @@ extra_css:
   - mkdocs/css/no-footer.css
   # 无序列表符号自定义
   - mkdocs/css/unordered-list-symbols.css
-  - mkdocs/css/kawaii.css
+  - extra.css
