@@ -31,6 +31,12 @@ nav:
         - PS/猫儿女仆.md
         - PS/浏览器封面.md
         - PS/树下的铃兰.md
+        
+  - 工业建模:
+    - fusion360/index.md
+
+  - blender:
+    - blender/index.md
 
   - comfyui:
     - comfyui/index.md
