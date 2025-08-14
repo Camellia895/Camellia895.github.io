@@ -31,7 +31,7 @@ nav:
         - PS/猫儿女仆.md
         - PS/浏览器封面.md
         - PS/树下的铃兰.md
-        
+
   - 工业建模:
     - fusion360/index.md
 
@@ -48,6 +48,12 @@ nav:
     - comfyui-workflows:
       - comfyui/Comfyui-workflows/分类工作流.md
       - comfyui/Comfyui-workflows/图像批生产工作流.md
+  - 表账:
+    - 表账/index.md
+    - 2025:
+      - 表账/2025/08.md
+
+
 
 
 # [UI]
