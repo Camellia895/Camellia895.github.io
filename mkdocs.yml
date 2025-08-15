@@ -111,6 +111,8 @@ theme:
     # 打开 Tab 时左侧目录全部展开
     # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#navigation-expansion
     - navigation.expand
+    - navigation.instant
+    - navigation.instant.prefetch
     # 搜索输入一些字母时推荐补全整个单词
     # https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-search/#search-suggestions
     - search.suggest
@@ -137,7 +139,7 @@ repo_name: Camellia895.github.io
 # [bottom-left corner]
 # [版权说明]
 # https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-footer/#copyright-notice
-copyright: Camellia895 CC-BY-4.0
+copyright: Camellia895 幼女革命协议
 # [bottom-right corner]
 extra:
   # [添加社交网络图标和链接]
