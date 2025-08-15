@@ -9,6 +9,7 @@ site_description: Camellia895的个人网站
 nav:
   - 我:
     - ME/index.md
+    - ME/致读者.md
   - 小说线:
     - write/index.md
     - write/642questions.md
