@@ -153,10 +153,6 @@ extra:
 plugins:
   # 离线功能
   - offline
-  - meta:
-    - path: . # 这里的路径是相对于 'docs' 目录
-      meta:
-        comments: true
   # [搜索功能]
   # https://squidfunk.github.io/mkdocs-material/plugins/search/
   # 之前中文搜索是 Insider 的功能（https://squidfunk.github.io/mkdocs-material/blog/2022/chinese-search-support/），现在好像已经是默认功能了，
