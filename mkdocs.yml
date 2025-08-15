@@ -72,7 +72,7 @@ theme:
   # [切换日间模式和夜间模式]
   # https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#color-palette-toggle
   font: false
-  custom_dir: overrides 
+  custom_dir: overrides
   icon:
     # [添加 GitHub 仓库]
     # https://squidfunk.github.io/mkdocs-material/setup/adding-a-git-repository/#repository-icon
