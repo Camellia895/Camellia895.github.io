@@ -27,6 +27,8 @@ jobs:
       - name: Pull Git LFS files
         run: git lfs pull
 
+      - name: install mkdocs-glightbox
+        run: pip install mkdocs-glightbox
       # 4. 再安装 Python 和相关环境
       - uses: actions/setup-python@v2
         with:

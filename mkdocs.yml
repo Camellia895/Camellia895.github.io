@@ -121,6 +121,8 @@ theme:
     # [点击按钮跳转至 GitHub 修改 Markdown 源文件]
     # https://squidfunk.github.io/mkdocs-material/setup/adding-a-git-repository/#code-actions
     - content.action.edit
+    # https://squidfunk.github.io/mkdocs-material/reference/footnotes/
+    - content.footnote.tooltips
   language: zh # 一些提示性的文字会变成中文
 # [点击按钮跳转至 GitHub 修改 Markdown 源文件]
 # https://squidfunk.github.io/mkdocs-material/setup/adding-a-git-repository/#code-actions
@@ -195,6 +197,11 @@ markdown_extensions:
   # [Markdown footnote 语法支持]
   # https://squidfunk.github.io/mkdocs-material/reference/footnotes/
   - footnotes
+  - attr_list
+  - md_in_html
+  - pymdownx.blocks.caption
+  # https://squidfunk.github.io/mkdocs-material/reference/images/#image-alignment-left
+  - glightbox
 
 extra_javascript:
   # [数学公式支持]
