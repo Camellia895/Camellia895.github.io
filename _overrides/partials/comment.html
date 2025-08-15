@@ -1,10 +1,11 @@
 {% if page.meta.comments %}
   <h2 id="__comments">{{ lang.t("meta.comments") }}</h2>
-  <!-- 这里是你提供的 Giscus 代码 -->
+  
+  <!-- Giscus 评论系统脚本 -->
   <script src="https://giscus.app/client.js"
           data-repo="Camellia895/Camellia895.github.io-assist"
           data-repo-id="R_kgDOPeXd2A"
-          data-category="Ideas" 
+          data-category="Ideas"
           data-category-id="DIC_kwDOPeXd2M4CuNUk"
           data-mapping="pathname"
           data-strict="0"
@@ -17,24 +18,22 @@
           crossorigin="anonymous"
           async>
   </script>
-  <!-- Synchronize Giscus theme with palette (这部分代码保持不变) -->
+
+  <!-- Giscus 主题与网站主题同步 -->
   <script>
     var giscus = document.querySelector("script[src*=giscus]")
-    // Set palette on initial load
     var palette = __md_get("__palette")
     if (palette && typeof palette.color === "object") {
       var theme = palette.color.scheme === "slate" ? "transparent_dark" : "light"
-      // Instruct Giscus to set theme
-      giscus.setAttribute("data-theme", theme)
+      giscus.setAttribute("data-theme", theme) 
     }
-    // Register event handlers after documented loaded
+
     document.addEventListener("DOMContentLoaded", function() {
       var ref = document.querySelector("[data-md-component=palette]")
       ref.addEventListener("change", function() {
         var palette = __md_get("__palette")
         if (palette && typeof palette.color === "object") {
           var theme = palette.color.scheme === "slate" ? "transparent_dark" : "light"
-          // Instruct Giscus to change theme
           var frame = document.querySelector(".giscus-frame")
           frame.contentWindow.postMessage(
             { giscus: { setConfig: { theme } } },
