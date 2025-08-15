@@ -31,8 +31,9 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: 3.x
+      - run: pip install mkdocs-glightbox
       # 5. 使用包管理工具 pip 安装 mkdocs-material
       - run: pip install mkdocs-material
-      - run: pip install mkdocs-glightbox
+
       # 6. 使用 mkdocs-material 构建网站并部署到 gh-pages 分支
       - run: mkdocs gh-deploy --force
