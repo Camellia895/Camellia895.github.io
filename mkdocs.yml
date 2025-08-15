@@ -201,7 +201,6 @@ markdown_extensions:
   - md_in_html
   - pymdownx.blocks.caption
   # https://squidfunk.github.io/mkdocs-material/reference/images/#image-alignment-left
-  - glightbox
 
 extra_javascript:
   # [数学公式支持]
