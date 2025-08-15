@@ -151,7 +151,8 @@ extra:
 
 # [Extensions]
 plugins:
-  - meta
+  - meta:
+       meta_file: .meta.yml
   # 离线功能
   - offline
   # [搜索功能]
