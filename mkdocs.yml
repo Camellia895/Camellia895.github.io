@@ -24,19 +24,25 @@ nav:
       - teach/搭船的鸟 逐字稿.md
       - teach/搭船的鸟 感想.md
 
-  - 美术线:
-      - PS/index.md
-      - PS:
-        - PS/爱丽丝闪耀.md
-        - PS/猫儿女仆.md
-        - PS/浏览器封面.md
-        - PS/树下的铃兰.md
+  - PS:
+    - PS/index.md
+    - PS/浏览器封面.md
+    - PS/树下的铃兰.md
+  - 排版设计:
+    - 排版设计/index.md
+    - 排版设计/爱丽丝闪耀.md
+    - 排版设计/猫儿女仆.md
+  - 手动绘画:
+    - 手动绘画/index.md
+    - 手动绘画/24年的绘画.md
 
   - 工业建模:
     - fusion360/index.md
+    - fusion360/占位.md
 
   - blender:
     - blender/index.md
+    - blender/占位.md
 
   - comfyui:
     - comfyui/index.md
@@ -51,6 +57,8 @@ nav:
   - 表账:
     - 表账/index.md
     - 2025:
+      - 表账/前言.md
+      - 表账/2025/07.md
       - 表账/2025/08.md
 
 
