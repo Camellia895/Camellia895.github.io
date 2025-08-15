@@ -39,11 +39,11 @@ nav:
 
   - 工业建模:
     - fusion360/index.md
-    - fusion360/占位.md
+    - fusion360/展望.md
 
   - blender:
     - blender/index.md
-    - blender/占位.md
+    - blender/致歉.md
 
   - comfyui:
     - comfyui/index.md
@@ -113,6 +113,8 @@ theme:
     # 打开 Tab 时左侧目录全部展开
     # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#navigation-expansion
     - navigation.expand
+
+    # 快速访问页面/页面预先加载
     - navigation.instant
     - navigation.instant.prefetch
     # 搜索输入一些字母时推荐补全整个单词
@@ -155,6 +157,7 @@ extra:
 
 # [Extensions]
 plugins:
+  # 批量处理功能
   - meta
   # 离线功能
   - offline
