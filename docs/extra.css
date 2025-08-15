@@ -11,3 +11,9 @@ font-family: "Aa偷吃可爱长大的",Helvetica, Arial, sans-serif;
 pre, code, kbd {
   font-family: "Aa偷吃可爱长大的", monospace;
 }
+
+[data-md-color-scheme="kawaii"] {
+  --md-primary-fg-color:        #f2f2f3;
+  --md-primary-fg-color--light: #fee7ef;
+  --md-primary-fg-color--dark:  #5d599b;
+}
