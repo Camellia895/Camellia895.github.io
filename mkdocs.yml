@@ -73,8 +73,8 @@ theme:
   # https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#color-palette-toggle
   font: false
   custom_dir: overrides
-  # logo: 网站服务/头像-缩小.jpg
-  # favicon: 网站服务/头像-缩小.jpg
+  logo: 网站服务/loge.ico
+  favicon: 网站服务/loge.ico
   icon:
     # [添加 GitHub 仓库]
     # https://squidfunk.github.io/mkdocs-material/setup/adding-a-git-repository/#repository-icon
