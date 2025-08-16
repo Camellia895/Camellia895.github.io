@@ -1,0 +1,13 @@
+@font-face {
+font-family: "Aa偷吃可爱长大的";
+src: url("../fonts/AaCute.woff") format("woff");
+font-weight: normal;
+font-style: normal;
+}
+
+body, input {
+font-family: "Aa偷吃可爱长大的",Helvetica, Arial, sans-serif;
+}
+pre, code, kbd {
+  font-family: "Aa偷吃可爱长大的", monospace;
+}
