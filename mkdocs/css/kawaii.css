@@ -1,0 +1,9 @@
+@font-face {
+  font-family: "AaCute"; 
+  src: url("../fonts/AaCute.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+body, input {
+  font-family: "AaCute", -apple-system, Helvetica, Arial, sans-serif;
+}
