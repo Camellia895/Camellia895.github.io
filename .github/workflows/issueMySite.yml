@@ -1,3 +1,38 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:27454188f64c50a43c407a10feddb83d92c7fd9ec48fe19eb26836d3e76ac143
-size 1328
+name: publish site
+# 触发条件
+on:
+  push:
+    branches:
+      - main
+# workflow 的具体内容
+jobs:
+  deploy:
+    # 创建一个 Ubuntu 容器
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 先打开 main 分支，并确保拉取 Git LFS 文件
+      - uses: actions/checkout@v2
+        with:
+          lfs: true # <--- 关键修改：告诉 checkout action 下载 LFS 文件
+
+      # 2. 安装 Git LFS（通常 checkout action 带有 lfs:true 会自动处理，但手动安装更保险）
+      #    如果您的Git LFS文件非常大或者 checkout action 仍然有问题，可以手动添加这一步
+      - name: Install Git LFS
+        run: |
+          sudo apt-get update
+          sudo apt-get install git-lfs # 安装 Git LFS 工具
+          git lfs install # 初始化 Git LFS 环境
+
+      # 3. 确保所有 Git LFS 文件都被拉取（通常在 checkout 之后自动完成，但有时需要明确调用）
+      - name: Pull Git LFS files
+        run: git lfs pull
+
+      # 4. 再安装 Python 和相关环境
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+      # 5. 使用包管理工具 pip 安装 mkdocs-material
+      - run: pip install mkdocs-material
+
+      # 6. 使用 mkdocs-material 构建网站并部署到 gh-pages 分支
+      - run: mkdocs gh-deploy --force

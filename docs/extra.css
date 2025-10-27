@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d701d256c3e4ba02bc7b8b6039e151ed08305e7b6230ff46efa48a269938c88e
-size 302
+@font-face {
+font-family: "Aa偷吃可爱长大的";
+src: url("../fonts/AaCute.woff") format("woff");
+font-weight: normal;
+font-style: normal;
+}
+
+body, input {
+font-family: "Aa偷吃可爱长大的",Helvetica, Arial, sans-serif;
+}
+pre, code, kbd {
+  font-family: "Aa偷吃可爱长大的", monospace;
+}

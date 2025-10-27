@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e25b4e9b04fd152bbd3dca2312b9b2eec747b8c44aa6965ecb1684e70c92ff1a
-size 391
+# 你好?
+
+
+- 通过主题和目录浏览文章。
+    - 电脑端：在上方标签栏选择主题，在左侧目录选择文章。
+    - 移动端：点击左上角图标选择主题和文章。
+- 搜索关键词查找文章。
+
+---
+
+> 记得使用 Ctrl+F5 刷新网页。避免出现缓存错误。
+>
+> 这是个色图网站，进站前务必确认性质 https://colorsite.librian.net/
+> 

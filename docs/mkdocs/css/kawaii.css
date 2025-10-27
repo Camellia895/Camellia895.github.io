@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8a2fa880cada4ceb6e85e04c2c07d10974366327e3260bbfe59525a9a240808a
-size 222
+@font-face {
+  font-family: "AaCute"; 
+  src: url("../fonts/AaCute.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+body, input {
+  font-family: "AaCute", -apple-system, Helvetica, Arial, sans-serif;
+}

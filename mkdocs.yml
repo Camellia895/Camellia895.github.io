@@ -1,3 +1,248 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d4e07f25928fc5e592eada05f7ef8573a895d84e535672a06231a7e4151da3ed
-size 8571
+# [Info]
+# 左上角标题
+site_name: Camellia895的个人网站
+site_url: https://Camellia895.github.io
+site_author: Camellia895
+site_description: Camellia895的个人网站
+
+# [Navigtion]
+nav:
+  - 我:
+    - ME/index.md
+    - ME/致读者.md
+  - 小说线:
+    - 写作/index.md
+    - 写作/642questions.md
+    - 写作/666questions.md
+    - 写作/化粪池.md
+    - 写作/魔法火箭.md
+    - 写作/我为什么会做这样的梦？.md
+
+  - 教学线: 
+    - 教学/index.md
+    - 第一次上台讲课:
+      - 教学/搭船的鸟 课案 2.md
+      - 教学/搭船的鸟 逐字稿.md
+      - 教学/搭船的鸟 感想.md
+    - 教资考试:
+      - 教学/教资考试/教资复习感想.md
+    - 教学笔记:
+      - 教学/教学笔记/班级管理.md
+      - 教学/教学笔记/课程设计.md
+    - 见习:
+      - 教学/见习/大三上的见习.md
+
+
+
+    
+
+  - PS:
+    - PS/index.md
+    - PS/浏览器封面.md
+    - PS/树下的铃兰.md
+  - 排版设计:
+    - 排版设计/index.md
+    - 排版设计/爱丽丝闪耀.md
+    - 排版设计/猫儿女仆.md
+    - 排版设计/磁镜式脉冲聚变喷灯.md
+    - 排版设计/未来主义 测试 黑 横屏.md
+    - 排版设计/航天飞机.md
+
+  - 手动绘画:
+    - 手动绘画/index.md
+    - 手动绘画/24年的绘画.md
+
+  - 工业建模:
+    - fusion360/index.md
+    - fusion360/展望.md
+
+  - blender:
+    - blender/index.md
+    - blender/致歉.md
+
+  - comfyui:
+    - comfyui/index.md
+    - comfyui-nodes:
+      - comfyui/nodes/分类工作流节点编写.md
+      - comfyui/nodes/图像批生产工作流节点编写.md   
+      - comfyui/nodes/wufucs节点编写.md   
+
+    - comfyui-workflows:
+      - comfyui/workflows/分类工作流.md
+      - comfyui/workflows/图像批生产工作流.md
+  - 表账:
+    - 表账/index.md
+    - 2025:
+      - 表账/前言.md
+      - 表账/2025/08.md
+      - 表账/2025/09.md
+      - 表账/2025/10.md
+
+
+
+
+# [UI]
+# [top]
+theme:
+  name: material
+  # [切换日间模式和夜间模式]
+  # https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#color-palette-toggle
+  font: false
+  custom_dir: overrides
+  logo: 网站服务/loge.ico
+  favicon: 网站服务/loge.ico
+  icon:
+    # [添加 GitHub 仓库]
+    # https://squidfunk.github.io/mkdocs-material/setup/adding-a-git-repository/#repository-icon
+    repo: fontawesome/brands/github
+  palette:
+    # 日间模式
+    - scheme: default
+      # 主颜色
+      # https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#primary-color
+      primary: indigo
+      # 链接等可交互元件的高亮色
+      # https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#accent-color
+      accent: orange
+      toggle:
+        # 图标
+        icon: material/weather-night
+        # 鼠标悬浮提示
+        name: 切换至夜间模式
+    # 夜间模式
+    - scheme: slate
+      primary: indigo
+      accent: orange
+      toggle:
+        icon: material/weather-sunny
+        name: 切换至日间模式     
+  features:
+    # 使用 Tab 来进行分类
+    # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#navigation-tabs
+    - navigation.tabs
+    # 返回顶部的按钮，在上滑时出现
+    # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#back-to-top-button
+    - navigation.top
+    # 给每个 Tab 添加一个 index.md，且在点击 Tab 时打开
+    # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#section-index-pages-with-section-index-pages
+    - navigation.indexes
+    # 打开 Tab 时左侧目录全部展开
+    # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#navigation-expansion
+    - navigation.expand
+
+    # 快速访问页面/页面预先加载
+    - navigation.instant
+    - navigation.instant.prefetch
+    # 搜索输入一些字母时推荐补全整个单词
+    # https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-search/#search-suggestions
+    - search.suggest
+    # 搜索的关键词文章加入高亮
+    # https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-search/#search-highlighting
+    - search.highlight
+    # 可以通过按钮复制代码
+    # https://squidfunk.github.io/mkdocs-material/reference/code-blocks/#code-copy-button
+    - content.code.copy
+    # [点击按钮跳转至 GitHub 修改 Markdown 源文件]
+    # https://squidfunk.github.io/mkdocs-material/setup/adding-a-git-repository/#code-actions
+    - content.action.edit
+    # https://squidfunk.github.io/mkdocs-material/reference/footnotes/
+    - content.footnote.tooltips
+  language: zh # 一些提示性的文字会变成中文
+# [点击按钮跳转至 GitHub 修改 Markdown 源文件]
+# https://squidfunk.github.io/mkdocs-material/setup/adding-a-git-repository/#code-actions
+edit_uri: edit/main/docs/
+# [top-right corner]
+# [添加 GitHub 仓库]
+# https://squidfunk.github.io/mkdocs-material/setup/adding-a-git-repository/
+repo_url: https://github.com/Camellia895/Camellia895.github.io
+repo_name: Camellia895.github.io
+# [bottom-left corner]
+# [版权说明]
+# https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-footer/#copyright-notice
+copyright: Camellia895 幼女革命协议
+# [bottom-right corner]
+extra:
+  # [添加社交网络图标和链接]
+  # https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-footer/#social-links
+  # 搜索图标：https://squidfunk.github.io/mkdocs-material/reference/icons-emojis/#search
+  # name 会在鼠标悬浮时提示
+  social: # icons
+    - name: GitHub | Camellia895
+      icon: fontawesome/brands/github
+      link: https://github.com/Camellia895
+
+# [Extensions]
+plugins:
+  # 批量处理功能
+  - meta
+  # 离线功能
+  - offline
+  # [搜索功能]
+  # https://squidfunk.github.io/mkdocs-material/plugins/search/
+  # 之前中文搜索是 Insider 的功能（https://squidfunk.github.io/mkdocs-material/blog/2022/chinese-search-support/），现在好像已经是默认功能了，
+  - search:
+      lang:
+        - zh
+        - en
+        - ja
+  # [给单篇文章添加标签]
+  # https://squidfunk.github.io/mkdocs-material/setup/setting-up-tags/
+  # https://squidfunk.github.io/mkdocs-material/plugins/tags/#meta.tags
+  - tags
+markdown_extensions:
+  # [数学公式支持]
+  # https://squidfunk.github.io/mkdocs-material/reference/math/#katex
+  - pymdownx.arithmatex:
+      generic: true
+  # [图片功能支持]
+  # https://squidfunk.github.io/mkdocs-material/reference/images/
+  # 给 Markdown 图片语法后面添加 `{width="300"}` 设置大小
+  - attr_list
+  - md_in_html
+  # [给标题添加链接]
+  # https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown/#+toc.permalink
+  - toc:
+      permalink: true # 固定标题位置为当前位置
+  # [代码语法高亮]
+  # https://squidfunk.github.io/mkdocs-material/reference/code-blocks/#code-blocks
+  # https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions/#highlight
+  - pymdownx.highlight:
+      # 显示行号
+      linenums: true
+      # 显示编程语言名称
+      auto_title: true
+      # https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions/#+pymdownx.highlight.line_spans
+      line_spans: __span
+      # https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions/#+pymdownx.highlight.pygments_lang_class
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  # [Markdown 提示]
+  # https://squidfunk.github.io/mkdocs-material/reference/admonitions/
+  - admonition
+  - pymdownx.details
+  # [Markdown footnote 语法支持]
+  # https://squidfunk.github.io/mkdocs-material/reference/footnotes/
+  - footnotes
+  - attr_list
+  - md_in_html
+  - pymdownx.blocks.caption
+  # https://squidfunk.github.io/mkdocs-material/reference/images/#image-alignment-left
+
+extra_javascript:
+  # [数学公式支持]
+  # https://squidfunk.github.io/mkdocs-material/reference/math/#katex
+  - mkdocs/javascripts/katex.js
+  - https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.js
+  - https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/contrib/auto-render.min.js
+extra_css:
+  # [数学公式支持]
+  # https://squidfunk.github.io/mkdocs-material/reference/math/#katex
+  - https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.css
+  # [自定义 css]
+  # 不使用底部的翻页
+  - mkdocs/css/no-footer.css
+  # 无序列表符号自定义
+  - mkdocs/css/unordered-list-symbols.css
+  - extra.css

@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2eb9b7878172839314ccd1c9e6e063db4f2fdab56724f82dd4bab8c8be5e4462
-size 98
+# 工业建模
+
+工业建模是给我的3D打印机服务的
+
+我又在给某处的谁服务呢？
