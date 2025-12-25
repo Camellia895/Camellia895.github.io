@@ -60,7 +60,7 @@ nav:
     - comfyui-nodes:
       - comfyui/nodes/分类工作流节点编写.md
       - comfyui/nodes/图像批生产工作流节点编写.md   
-      - comfyui/nodes/wufucs节点编写.md   
+      - comfyui/nodes/wufucs节点编写.md
 
     - comfyui-workflows:
       - comfyui/workflows/分类工作流.md
