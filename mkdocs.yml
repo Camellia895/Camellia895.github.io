@@ -17,6 +17,10 @@ nav:
     - 写作/化粪池.md
     - 写作/魔法火箭.md
     - 写作/我为什么会做这样的梦？.md
+    
+  - blog:
+    - blog/index.md
+
 
   - 教学线: 
     - 教学/index.md
@@ -152,6 +156,8 @@ theme:
     - content.action.edit
     # https://squidfunk.github.io/mkdocs-material/reference/footnotes/
     - content.footnote.tooltips
+    # https://squidfunk.github.io/mkdocs-material/reference/tooltips/
+    - content.tooltips
   language: zh # 一些提示性的文字会变成中文
 # [点击按钮跳转至 GitHub 修改 Markdown 源文件]
 # https://squidfunk.github.io/mkdocs-material/setup/adding-a-git-repository/#code-actions
@@ -175,6 +181,7 @@ extra:
     - name: GitHub | Camellia895
       icon: fontawesome/brands/github
       link: https://github.com/Camellia895
+      
 
 # [Extensions]
 plugins:
@@ -194,7 +201,21 @@ plugins:
   # https://squidfunk.github.io/mkdocs-material/setup/setting-up-tags/
   # https://squidfunk.github.io/mkdocs-material/plugins/tags/#meta.tags
   - tags
+  - blog
+  - glightbox
+  - privacy
+  - social
+
 markdown_extensions:
+  # [格式 Aa]
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  # [改进工具提示]
+  # https://squidfunk.github.io/mkdocs-material/reference/tooltips/
+
   # [数学公式支持]
   # https://squidfunk.github.io/mkdocs-material/reference/math/#katex
   - pymdownx.arithmatex:
@@ -221,8 +242,26 @@ markdown_extensions:
       # https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions/#+pymdownx.highlight.pygments_lang_class
       pygments_lang_class: true
   - pymdownx.inlinehilite
-  - pymdownx.snippets
-  - pymdownx.superfences
+  - pymdownx.snippets:
+      auto_append:
+        - includes/术语表.md
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+      combine_header_slug: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
   # [Markdown 提示]
   # https://squidfunk.github.io/mkdocs-material/reference/admonitions/
   - admonition
@@ -230,6 +269,7 @@ markdown_extensions:
   # [Markdown footnote 语法支持]
   # https://squidfunk.github.io/mkdocs-material/reference/footnotes/
   - footnotes
+  - abbr
   - attr_list
   - md_in_html
   - pymdownx.blocks.caption
