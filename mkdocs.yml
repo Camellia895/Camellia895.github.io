@@ -203,8 +203,10 @@ plugins:
   - tags
   - blog
   - glightbox
-  - social:
-      cards: true
+  #- social:
+      #cards_layout_dir: layouts
+      #cards_layout: custom
+      #debug: true
           
 markdown_extensions:
   # [格式 Aa]
