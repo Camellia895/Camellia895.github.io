@@ -33,6 +33,7 @@ jobs:
           python-version: 3.x
       # 5. 使用包管理工具 pip 安装 mkdocs-material
       - run: pip install mkdocs-material
-
+      - run: pip install mkdocs-glightbox
+      - run: pip install cairosvg  # 顺便把这个也加上，否则你的社交卡片在云端也编不出来
       # 6. 使用 mkdocs-material 构建网站并部署到 gh-pages 分支
       - run: mkdocs gh-deploy --force

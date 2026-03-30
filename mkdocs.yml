@@ -204,8 +204,9 @@ plugins:
   - blog
   - glightbox
   - privacy
-  - social
-
+  - social:
+      cards: true
+          
 markdown_extensions:
   # [格式 Aa]
   - pymdownx.critic
