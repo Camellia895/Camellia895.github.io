@@ -188,7 +188,7 @@ plugins:
   # 批量处理功能
   - meta
   # 离线功能
-  # - offline
+  - offline
   # [搜索功能]
   # https://squidfunk.github.io/mkdocs-material/plugins/search/
   # 之前中文搜索是 Insider 的功能（https://squidfunk.github.io/mkdocs-material/blog/2022/chinese-search-support/），现在好像已经是默认功能了，
@@ -201,7 +201,15 @@ plugins:
   # https://squidfunk.github.io/mkdocs-material/setup/setting-up-tags/
   # https://squidfunk.github.io/mkdocs-material/plugins/tags/#meta.tags
   - tags
-  - blog
+  - blog:
+      categories_allowed:
+        - 平面设计
+        - 想象
+        - 心理
+        - 教学
+        - 钱 
+        - 小说
+        - News
   - glightbox
   #- social:
       #cards_layout_dir: layouts
