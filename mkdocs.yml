@@ -70,7 +70,8 @@ nav:
       - comfyui/workflows/分类工作流.md
       - comfyui/workflows/图像批生产工作流.md
   
-  - 吃药：
+  - 药物:
+
     - 药物/index.md
     - 药物/药物准入.md
 
