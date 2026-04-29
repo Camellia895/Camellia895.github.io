@@ -17,10 +17,6 @@ nav:
     - 写作/化粪池.md
     - 写作/魔法火箭.md
     - 写作/我为什么会做这样的梦？.md
-    
-  - blog:
-    - blog/index.md
-
 
   - 教学线: 
     - 教学/index.md
@@ -73,6 +69,11 @@ nav:
     - comfyui-workflows:
       - comfyui/workflows/分类工作流.md
       - comfyui/workflows/图像批生产工作流.md
+  
+  - 吃药：
+    - 药物/index.md
+    - 药物/药物准入.md
+
   - 表账:
     - 表账/index.md
     - 表账/前言.md

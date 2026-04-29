@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caffeine Tracker PRO | 动态咖啡因代谢追踪</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, hsla(225,39%,30%,0.2) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(339,49%,30%,0.2) 0, transparent 50%);
+            min-height: 100vh;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+    </style>
+</head>
+<body class="p-6 md:p-10">
+
+    <div class="max-w-7xl mx-auto space-y-6">
+        
+        <!-- 头部标题与参数调节 -->
+        <div class="flex flex-col md:flex-row justify-between items-end pb-4 border-b border-slate-700">
+            <div>
+                <h1 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 mb-2">
+                    Caffeine Tracker PRO
+                </h1>
+                <p class="text-slate-400 flex items-center gap-4">
+                    <span><kbd class="bg-slate-800 px-2 py-1 rounded text-xs border border-slate-600">左键点击</kbd> 空白处添加记录</span>
+                    <span><kbd class="bg-slate-800 px-2 py-1 rounded text-xs border border-slate-600 text-purple-300">上下拖拽</kbd> 紫色光点实时调整剂量</span>
+                </p>
+            </div>
+            
+            <div class="glass-panel p-4 rounded-xl flex gap-6 mt-4 md:mt-0">
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">消除半衰期 (小时)</label>
+                    <input type="number" id="halfLife" value="5.0" step="0.5" class="w-20 bg-slate-800 border border-slate-600 rounded px-2 py-1 text-sm focus:outline-none focus:border-blue-500 transition">
+                </div>
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">吸收达峰时间 (小时)</label>
+                    <input type="number" id="peakTime" value="0.75" step="0.1" class="w-20 bg-slate-800 border border-slate-600 rounded px-2 py-1 text-sm focus:outline-none focus:border-purple-500 transition">
+                </div>
+            </div>
+        </div>
+
+        <!-- 核心图表容器 -->
+        <div class="glass-panel rounded-2xl p-4 w-full h-[500px]" id="chart-container"></div>
+
+        <!-- 底部面板 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- 实时监控面板 -->
+            <div class="glass-panel rounded-2xl p-6 relative">
+                <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-2">
+                    <h2 class="text-xl font-semibold text-blue-300">🎯 实时浓度监控</h2>
+                    <button id="btnAddSampler" class="bg-blue-600/30 hover:bg-blue-600 text-blue-200 text-sm px-4 py-1.5 rounded transition border border-blue-500/50 shadow-[0_0_10px_rgba(37,99,235,0.2)]">
+                        + 添加监控时间
+                    </button>
+                </div>
+                <ul id="samplerList" class="space-y-2 max-h-48 overflow-y-auto pr-2">
+                    <!-- 监控点将渲染于此 -->
+                </ul>
+            </div>
+
+            <!-- 摄入日志面板 -->
+            <div class="glass-panel rounded-2xl p-6 flex flex-col">
+                <h2 class="text-xl font-semibold text-purple-300 border-b border-slate-700 pb-2 mb-4">☕ 摄入日志 (可拖拽图表修改)</h2>
+                <ul id="doseList" class="space-y-3 flex-1 overflow-y-auto pr-2 max-h-36">
+                    <!-- 摄入日志将渲染于此 -->
+                </ul>
+                <div class="mt-4 pt-4 border-t border-slate-700 flex justify-between items-center bg-slate-800/50 p-4 rounded-xl">
+                    <span class="text-slate-300 font-medium">当前时刻体内残留量：</span>
+                    <span id="currentAmount" class="text-3xl font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">
+                        0 <span class="text-sm font-normal text-slate-400">mg</span>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // --- 数据状态管理 ---
+        let doses = [];     // 摄入记录: { id, timeH, amount }
+        let samplers = [];  // 监控点: { id, timeStr, timeH }
+        let doseIdCounter = 0;
+        let samplerIdCounter = 0;
+
+        // --- 核心数学模型 (Bateman Function) ---
+        const getParams = () => {
+            const hElim = parseFloat(document.getElementById('halfLife').value) || 5.0;
+            const tPeak = parseFloat(document.getElementById('peakTime').value) || 0.75;
+            const ke = Math.LN2 / hElim;
+            const hAbs = tPeak / 3.5; 
+            const ka = Math.LN2 / hAbs;
+            return { ke, ka };
+        };
+
+        const calcConcentration = (t_hours) => {
+            const { ke, ka } = getParams();
+            let total = 0;
+            for (let d of doses) {
+                if (t_hours >= d.timeH) {
+                    const dt = t_hours - d.timeH;
+                    if (ka === ke) continue; 
+                    const factor = ka / (ka - ke);
+                    total += d.amount * factor * (Math.exp(-ke * dt) - Math.exp(-ka * dt));
+                }
+            }
+            return Math.max(0, total);
+        };
+
+        // --- 时间换算工具 ---
+        const hoursToString = (h) => {
+            let totalMins = Math.round(h * 60);
+            let hr = Math.floor(totalMins / 60) + 7;
+            let mn = totalMins % 60;
+            if (hr >= 24) hr -= 24;
+            return `${hr.toString().padStart(2, '0')}:${mn.toString().padStart(2, '0')}`;
+        };
+
+        const stringToHours = (timeStr) => {
+            const [h, m] = timeStr.split(':').map(Number);
+            let val = h + m / 60;
+            if (h >= 7) val -= 7; else val = val + 24 - 7;
+            return val;
+        };
+
+        const getRealTimeX = () => {
+            const now = new Date();
+            const h = now.getHours();
+            const m = now.getMinutes();
+            let val = h + m / 60;
+            if (h >= 7) val -= 7; else val += 17;
+            return (val > 19 || val < 0) ? null : val;
+        };
+
+        // --- ECharts 初始化与渲染系统 ---
+        const chartDom = document.getElementById('chart-container');
+        const myChart = echarts.init(chartDom);
+
+        // 完整重绘 (包括重建可拖拽图形节点)
+        const renderFullChart = () => {
+            updateDataAndUI(true);
+        };
+
+        // 仅更新数据曲线和 UI (供拖拽时高频调用，保持极致流畅)
+        const updateDataAndUI = (updateGraphics = false) => {
+            const lineData = [];
+            for (let t = 0; t <= 19; t += 0.05) {
+                lineData.push([t, calcConcentration(t)]);
+            }
+
+            const scatterData = doses.map(d => [d.timeH, d.amount, d.id]);
+            
+            // 垂直指引线 (摄入点到X轴)
+            const markLines = doses.map(d => ({
+                xAxis: d.timeH,
+                label: { show: false },
+                lineStyle: { color: '#a855f7', type: 'dashed', opacity: 0.4 }
+            }));
+
+            // 当前时间指示线
+            const realTimeX = getRealTimeX();
+            if (realTimeX !== null) {
+                markLines.push({
+                    xAxis: realTimeX,
+                    label: { formatter: '现在', color: '#60a5fa', position: 'start', fontSize: 14, fontWeight: 'bold' },
+                    lineStyle: { color: '#3b82f6', type: 'solid', width: 2, shadowColor: '#3b82f6', shadowBlur: 10 }
+                });
+                
+                document.getElementById('currentAmount').innerHTML = 
+                    `${calcConcentration(realTimeX).toFixed(1)} <span class="text-sm font-normal text-slate-400">mg</span>`;
+            }
+
+            const option = {
+                tooltip: {
+                    trigger: 'axis',
+                    backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                    borderColor: '#3b82f6',
+                    textStyle: { color: '#fff' },
+                    formatter: function (params) {
+                        if (params[0].seriesType === 'scatter') {
+                            return `<b class="text-purple-400">摄入剂量</b><br/>${params[0].value[1]} mg`;
+                        }
+                        const pt = params[0];
+                        return `<div class="font-bold text-blue-400 mb-1">${hoursToString(pt.value[0])}</div>
+                                <div>体内浓度: <span class="font-bold text-white">${pt.value[1].toFixed(2)} mg</span></div>`;
+                    }
+                },
+                grid: { left: '3%', right: '4%', bottom: '3%', top: '15%', containLabel: true },
+                xAxis: {
+                    type: 'value', min: 0, max: 19, interval: 1,
+                    axisLabel: { formatter: val => hoursToString(val), color: '#94a3b8' },
+                    splitLine: { show: false },
+                    axisLine: { lineStyle: { color: '#475569' } }
+                },
+                yAxis: {
+                    type: 'value', name: '剂量 / 残留浓度 (mg)',
+                    max: function (value) { return Math.max(200, value.max + 50); }, // 留出拖拽余量
+                    nameTextStyle: { color: '#94a3b8', fontSize: 13 },
+                    axisLabel: { color: '#94a3b8' },
+                    splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } }
+                },
+                series: [
+                    {
+                        name: '浓度曲线',
+                        type: 'line', smooth: 0.4, symbol: 'none',
+                        lineStyle: {
+                            width: 3, shadowBlur: 10, shadowColor: 'rgba(59, 130, 246, 0.5)',
+                            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                                { offset: 0, color: '#3b82f6' }, { offset: 1, color: '#a855f7' }
+                            ])
+                        },
+                        areaStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: 'rgba(168, 85, 247, 0.4)' },
+                                { offset: 1, color: 'rgba(59, 130, 246, 0.01)' }
+                            ])
+                        },
+                        data: lineData,
+                        markLine: { symbol: ['none', 'none'], data: markLines }
+                    },
+                    {
+                        name: '摄入点',
+                        type: 'scatter',
+                        symbolSize: 20,
+                        itemStyle: {
+                            color: '#a855f7', shadowColor: '#c084fc', shadowBlur: 15,
+                            borderColor: '#fff', borderWidth: 2
+                        },
+                        data: scatterData,
+                        z: 10 // 确保显示在曲线上方
+                    }
+                ]
+            };
+
+            // 如果需要更新可拖拽的底层节点 (Graphic Component)
+            if (updateGraphics) {
+                // 清理旧节点
+                const oldGraphics = myChart.getOption()?.graphic || [];
+                let newGraphics = oldGraphics.map(g => ({ id: g.elements[0].id, $action: 'remove' }));
+                
+                // 构建新节点
+                if (doses.length > 0) {
+                    newGraphics = doses.map(d => ({
+                        type: 'circle',
+                        id: `drag_node_${d.id}`,
+                        position: myChart.convertToPixel('grid', [d.timeH, d.amount]),
+                        shape: { r: 24 }, // 增加隐形拖拽判定区大小
+                        invisible: true,  // 隐藏实体，依赖 scatter 显示，但保留鼠标事件
+                        draggable: true,
+                        cursor: 'ns-resize', // 上下拖拽指针
+                        z: 100,
+                        ondrag: function () {
+                            const pt = myChart.convertFromPixel('grid', this.position);
+                            let newY = Math.max(0, pt[1]); // 限制最低为 0
+                            
+                            // 锁定 X 轴，仅允许 Y 轴(剂量)改变
+                            this.position[0] = myChart.convertToPixel('grid', [d.timeH, newY])[0];
+                            
+                            d.amount = Math.round(newY);
+                            // 拖拽时只更新曲线和数值，不重建 Graphic
+                            updateDataAndUI(false); 
+                        },
+                        ondragend: function() {
+                            // 拖拽松手后触发一次吸附和节点位置纠正
+                            renderFullChart();
+                        }
+                    }));
+                }
+                option.graphic = newGraphics;
+            }
+
+            myChart.setOption(option, updateGraphics ? { replaceMerge: ['graphic'] } : false);
+            
+            // 联动刷新下方 UI 数据
+            updateDoseListUI();
+            updateSamplersUI();
+        };
+
+        // --- 交互系统 ---
+
+        // 1. 点击图表空白处添加摄入
+        myChart.getZr().on('click', function (params) {
+            // 如果点在了拖拽节点上，则忽略图表点击事件
+            if (params.target != null) return;
+
+            if (myChart.containPixel('grid', [params.offsetX, params.offsetY])) {
+                const pointInGrid = myChart.convertFromPixel({ seriesIndex: 0 }, [params.offsetX, params.offsetY]);
+                const xVal = pointInGrid[0];
+                const timeStr = hoursToString(xVal);
+
+                Swal.fire({
+                    title: '☕ 添加咖啡因摄入',
+                    html: `设定时间：<b class="text-blue-400">${timeStr}</b><br><br>
+                           <span class="text-sm text-gray-400">此后可直接在图表上拖拽光点修改剂量</span>`,
+                    input: 'number',
+                    inputPlaceholder: '如 100 (mg)',
+                    showCancelButton: true,
+                    confirmButtonText: '注入灵魂', cancelButtonText: '取消',
+                    background: '#1e293b', color: '#fff',
+                    confirmButtonColor: '#3b82f6', cancelButtonColor: '#475569',
+                    inputValidator: val => (!val || val <= 0) ? '请输入有效的毫克数！' : null
+                }).then(res => {
+                    if (res.isConfirmed) {
+                        doses.push({ id: doseIdCounter++, timeH: xVal, amount: parseFloat(res.value) });
+                        doses.sort((a, b) => a.timeH - b.timeH);
+                        renderFullChart(); // 添加节点需要重建 Graphic
+                    }
+                });
+            }
+        });
+
+        // 2. 实时监控器 UI 逻辑
+        const updateSamplersUI = () => {
+            const ul = document.getElementById('samplerList');
+            if (samplers.length === 0) {
+                ul.innerHTML = '<div class="text-slate-500 text-sm mt-2 text-center">暂无监控点。点击上方按钮添加。</div>';
+                return;
+            }
+            ul.innerHTML = samplers.map(s => {
+                const conc = calcConcentration(s.timeH).toFixed(2);
+                return `
+                <li class="flex justify-between items-center bg-blue-900/10 p-3 rounded-xl border border-blue-800/30 shadow-inner">
+                    <span class="text-blue-300 font-mono font-bold text-lg tracking-wider">${s.timeStr}</span>
+                    <div class="flex items-center gap-4">
+                        <span class="font-bold text-white text-xl w-24 text-right">${conc} <span class="text-xs text-blue-400 font-normal">mg</span></span>
+                        <button onclick="removeSampler(${s.id})" class="text-slate-500 hover:text-red-400 transition" title="移除监控">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                </li>`;
+            }).join('');
+        };
+
+        document.getElementById('btnAddSampler').addEventListener('click', () => {
+            Swal.fire({
+                title: '设定监控时间',
+                input: 'time',
+                background: '#1e293b', color: '#fff',
+                confirmButtonColor: '#3b82f6',
+                showCancelButton: true, confirmButtonText: '确定', cancelButtonText: '取消'
+            }).then(res => {
+                if (res.isConfirmed && res.value) {
+                    const h = stringToHours(res.value);
+                    if (h < 0 || h > 19) {
+                        Swal.fire({ icon:'error', title:'超出范围', text:'请选择 07:00 到次日 02:00', background: '#1e293b', color: '#fff'});
+                        return;
+                    }
+                    samplers.push({ id: samplerIdCounter++, timeStr: res.value, timeH: h });
+                    // 按时间排序
+                    samplers.sort((a, b) => a.timeH - b.timeH);
+                    updateSamplersUI();
+                }
+            });
+        });
+
+        window.removeSampler = (id) => {
+            samplers = samplers.filter(s => s.id !== id);
+            updateSamplersUI();
+        };
+
+        // 3. 摄入日志 UI 逻辑
+        const updateDoseListUI = () => {
+            const listObj = document.getElementById('doseList');
+            if (doses.length === 0) {
+                listObj.innerHTML = '<div class="text-slate-500 text-sm mt-2">暂无记录。</div>';
+                return;
+            }
+            listObj.innerHTML = doses.map(d => `
+                <li class="flex justify-between items-center bg-slate-800/40 p-2.5 rounded-lg border border-slate-700/50">
+                    <div class="flex items-center gap-3">
+                        <span class="bg-purple-600/20 text-purple-400 px-2 py-0.5 rounded text-sm font-mono">${hoursToString(d.timeH)}</span>
+                        <span class="font-bold text-slate-200">${d.amount} mg</span>
+                    </div>
+                    <button onclick="removeDose(${d.id})" class="text-slate-500 hover:text-red-400 transition" title="删除记录">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    </button>
+                </li>
+            `).join('');
+        };
+
+        window.removeDose = (id) => {
+            doses = doses.filter(d => d.id !== id);
+            renderFullChart(); // 删除节点需要重建 Graphic
+        };
+
+        // 监听顶部参数改变，实时重绘
+        document.getElementById('halfLife').addEventListener('input', () => updateDataAndUI(false));
+        document.getElementById('peakTime').addEventListener('input', () => updateDataAndUI(false));
+
+        // 窗口大小自适应，必须重建 Graphic 确保拖拽区匹配视觉点
+        window.addEventListener('resize', () => {
+            myChart.resize();
+            renderFullChart();
+        });
+
+        // 定时器：每分钟只刷新数据，不打断用户可能的拖拽操作
+        setInterval(() => updateDataAndUI(false), 60000);
+
+        // --- 演示初始化 ---
+        setTimeout(() => {
+            // 默认添加一个 08:30 的摄入记录和一个晚上的监控点展示效果
+            doses.push({ id: doseIdCounter++, timeH: 1.5, amount: 150 }); 
+            samplers.push({ id: samplerIdCounter++, timeStr: '23:30', timeH: 16.5 });
+            renderFullChart();
+            updateSamplersUI();
+        }, 300);
+
+    </script>
+</body>
+</html>
