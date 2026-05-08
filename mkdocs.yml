@@ -83,6 +83,7 @@ nav:
       - 表账/2026/02.md
       - 表账/2026/03.md
       - 表账/2026/04.md
+      - 表账/2026/05.md
     - 2025:
       - 表账/2025/08.md
       - 表账/2025/09.md
@@ -173,7 +174,7 @@ repo_name: Camellia895.github.io
 # [bottom-left corner]
 # [版权说明]
 # https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-footer/#copyright-notice
-copyright: Camellia895 幼女革命协议
+copyright: Camellia895 莉沫酱革命协议
 # [bottom-right corner]
 extra:
   # [添加社交网络图标和链接]
