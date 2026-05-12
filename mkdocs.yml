@@ -1,3 +1,4 @@
+# mkdocs serve
 # [Info]
 # 左上角标题
 site_name: Camellia895的个人网站
@@ -30,12 +31,13 @@ nav:
       - 教学/教资考试/教资复习感想.md
     - 教学笔记:
       - 教学/教学笔记/班级管理.md
-      - 教学/教学笔记/课程设计.md
     - 见习:
       - 教学/见习/大三上的见习.md
     - 萨提亚学说 :
       - 教学/萨提亚学说/学习日志 李崇建.md
-      
+    - 特色课程 :
+      - 教学/特色课程/课程设计.md
+
   - 平面设计:
     - 平面设计/index.md
     - 平面设计/总结的理论.md
@@ -307,3 +309,4 @@ extra_css:
   # 无序列表符号自定义
   - mkdocs/css/unordered-list-symbols.css
   - extra.css
+

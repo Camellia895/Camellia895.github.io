@@ -803,14 +803,14 @@ led色，色温良好，无味。
 
 > 一些[进化心理学](https://zhida.zhihu.com/search?content_id=652475602&content_type=Answer&match_order=1&q=进化心理学&zhida_source=entity)研究认为，由于哺乳类幼体需要成体长时间照顾，对幼体的正面情感可以带来好处，成体间的正面情感则可以减轻摩擦、帮助维持群体。**性的生物学模型**倾向于将涉及繁衍的“哺乳类的爱”视为**动力**，与饥饿、口渴、睡眠欲类似。
 >
-> 人类学家 [Helen Fisher](https://zhida.zhihu.com/search?content_id=652475602&content_type=Answer&match_order=1&q=Helen+Fisher&zhida_source=entity) 将此类爱的过程分为三个部分重叠的阶段：
+> 人类学家 Helen Fisher 将此类爱的过程分为三个部分重叠的阶段：
 > **欲望**，涉及性欲相关的神经回路与神经递质、激素调节，通常持续数天到数个月；
 > **吸引力**，涉及性选择塑造的性吸引力和追求方式，可以节约与大量伴侣磨合的时间和精力，针对特定对象产生个性化的浪漫渴望，这渴望通常随着对特定对象作出更多承诺和接触而逐渐消退；
 > **依恋**，涉及共享衣食住行等资源、照顾对方和后代、防御外来侵袭等职责、人对安全感的需求。
 > 你可以测得热恋时人脑释放的多巴胺、去甲肾上腺素、血清素，这会刺激愉悦相关的脑区，并引起心率加快、食欲下降、睡眠欲下降、兴奋的感觉。这些变化通常在一年半到三年内消退。
 >
-> [Enzo Emanuele](https://zhida.zhihu.com/search?content_id=652475602&content_type=Answer&match_order=1&q=Enzo+Emanuele&zhida_source=entity) 等科学家发现[神经生长因子](https://zhida.zhihu.com/search?content_id=652475602&content_type=Answer&match_order=1&q=神经生长因子&zhida_source=entity)在人们初次恋爱时水平升高，1 年后消退[[2\]](#ref_2)。
-> 你还可以用 [fMRI](https://zhida.zhihu.com/search?content_id=652475602&content_type=Answer&match_order=1&q=fMRI&zhida_source=entity) 窥测人们的大脑，预测他们何时开始上床、何时开始吵架。
+> Enzo Emanuele等科学家发现神经生长因子在人们初次恋爱时水平升高，1 年后消退
+> 你还可以用 fMRI窥测人们的大脑，预测他们何时开始上床、何时开始吵架。
 > 依恋可以长时间持续。婚姻、后代、共同利益、友情等带来的关系可以持续数十年，并对应到更高水平的催产素、血管加压素早已停止繁衍或从未繁衍/生物学身体上缺少生殖能力的人仍然可以对他人或其他物体表达爱意，可以有“至死不渝的爱”。
 
 倒不是我不愿把爱意倾倒在你的怀里。
