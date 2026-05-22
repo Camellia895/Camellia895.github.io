@@ -1,6 +1,7 @@
 @font-face {
 font-family: "Aa偷吃可爱长大的";
-src: url("../fonts/AaCute.woff") format("woff");
+src: url("fonts/AaCute.woff") format("woff"),
+     url("fonts/AaCute.ttf") format("truetype");
 font-weight: normal;
 font-style: normal;
 }
