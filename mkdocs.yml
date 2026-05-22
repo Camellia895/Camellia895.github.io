@@ -183,6 +183,9 @@ repo_name: Camellia895.github.io
 copyright: Camellia895 莉沫酱革命协议
 # [bottom-right corner]
 extra:
+  # [网站备案号]
+  # https://beian.miit.gov.cn/
+  icp: 闽ICP备2026017820号
   # [添加社交网络图标和链接]
   # https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-footer/#social-links
   # 搜索图标：https://squidfunk.github.io/mkdocs-material/reference/icons-emojis/#search

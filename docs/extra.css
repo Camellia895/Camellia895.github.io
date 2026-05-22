@@ -11,3 +11,11 @@ font-family: "Aa偷吃可爱长大的",Helvetica, Arial, sans-serif;
 pre, code, kbd {
   font-family: "Aa偷吃可爱长大的", monospace;
 }
+
+/* ICP 备案号样式 - 位于 md-social 容器内，social icons 右侧 */
+.md-social__icp {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.64rem;
+  white-space: nowrap;
+}
