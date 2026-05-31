@@ -26,6 +26,8 @@ kbd {
 }
 
 /* 修复注释（annotate）tooltip 字体继承问题 */
+/* .md-tooltip 在 main.css 中被写死为 var(--md-text-font-family)，需覆盖 */
+.md-tooltip,
 .md-tooltip__inner {
   font-family: inherit;
 }
