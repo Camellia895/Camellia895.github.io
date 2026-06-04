@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>字体去重与格式转换工具</title>
+    <script src="opentype.min.js"></script>
+    <script src="fflate.min.js"></script>
+    <script src="jszip.min.js"></script>
+    <style>
+        :root {
+            --bg: #f5f5f5;
+            --surface: #ffffff;
+            --border: #e0e0e0;
+            --text: #333333;
+            --text-secondary: #666666;
+            --accent: #3f51b5;
+            --accent-hover: #303f9f;
+            --danger: #e53935;
+            --danger-hover: #c62828;
+            --success: #43a047;
+            --warning: #ffa726;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --radius: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 0;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+
+        .dropzone {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 40px 20px;
+            text-align: center;
+            background: var(--surface);
+            transition: border-color 0.3s, background 0.3s;
+            margin: 20px 0;
+        }
+
+        .dropzone.drag-over {
+            border-color: var(--accent);
+            background: rgba(63, 81, 181, 0.04);
+        }
+
+        .dropzone .icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .dropzone .title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .dropzone .hint {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .dropzone input[type="file"] {
+            display: none;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s, transform 0.1s;
+            white-space: nowrap;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background: var(--danger-hover);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-outline:hover {
+            background: var(--bg);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background: #388e3c;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            padding: 12px 0;
+        }
+
+        .toolbar .spacer {
+            flex: 1;
+        }
+
+        .toolbar select {
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            background: var(--surface);
+        }
+
+        .table-container {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+
+        thead {
+            background: var(--bg);
+        }
+
+        th {
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid var(--border);
+            white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        th:hover {
+            color: var(--accent);
+        }
+
+        th .sort-arrow {
+            margin-left: 4px;
+            font-size: 0.7rem;
+            opacity: 0.5;
+        }
+
+        th.sorted .sort-arrow {
+            opacity: 1;
+        }
+
+        td {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        tr:hover td {
+            background: rgba(63, 81, 181, 0.03);
+        }
+
+        tr.duplicate td {
+            background: rgba(255, 167, 38, 0.08);
+        }
+
+        tr.duplicate:hover td {
+            background: rgba(255, 167, 38, 0.14);
+        }
+
+        .family-name {
+            font-weight: 600;
+        }
+
+        .format-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            background: #e8eaf6;
+            color: var(--accent);
+        }
+
+        .format-badge.woff2 {
+            background: #e0f2f1;
+            color: #00695c;
+        }
+
+        .format-badge.woff {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .format-badge.sfnt {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .keep-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .keep-badge.keep {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .keep-badge.discard {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin: 12px 0;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+        }
+
+        .stats strong {
+            color: var(--text);
+        }
+
+        .progress-bar {
+            display: none;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar.active {
+            display: block;
+        }
+
+        .progress-bar .fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 2px;
+            transition: width 0.3s;
+            width: 0%;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .dropzone {
+                padding: 24px 12px;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                justify-content: center;
+            }
+
+            th,
+            td {
+                padding: 6px 8px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🔤 字体去重与格式转换工具</h1>
+        <p>上传字体文件 → 自动识别重复 → 选择保留 → 批量转换格式 → 打包下载</p>
+    </header>
+
+    <div class="container">
+        <div class="dropzone" id="dropzone">
+            <div class="icon">📁</div>
+            <div class="title">拖放字体文件或文件夹到此处</div>
+            <div class="hint">支持 .ttf、.otf、.sfnt、.woff、.woff2 格式</div>
+            <input type="file" id="fileInput" multiple accept=".ttf,.otf,.sfnt,.woff,.woff2">
+            <input type="file" id="folderInput" webkitdirectory>
+            <div style="margin-top:14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+                <button class="btn btn-primary" id="btnSelectFiles">选择文件</button>
+                <button class="btn btn-outline" id="btnSelectFolder">选择文件夹</button>
+            </div>
+        </div>
+
+        <div class="progress-bar" id="progressBar">
+            <div class="fill" id="progressFill"></div>
+        </div>
+
+        <div class="stats" id="stats" style="display:none;">
+            <span>总计：<strong id="statTotal">0</strong> 个文件</span>
+            <span>唯一字体：<strong id="statUnique">0</strong> 组</span>
+            <span>建议保留：<strong id="statKeep">0</strong> 个</span>
+            <span>建议丢弃：<strong id="statDiscard">0</strong> 个</span>
+        </div>
+
+        <div class="toolbar" id="toolbar" style="display:none;">
+            <button class="btn btn-primary" id="btnAutoSelect">🤖 自动选择最优版本</button>
+            <button class="btn btn-outline" id="btnSelectAll">☑️ 全选保留</button>
+            <button class="btn btn-outline" id="btnDeselectAll">⬜ 全部丢弃</button>
+            <span class="spacer"></span>
+            <label for="targetFormat">目标格式：</label>
+            <select id="targetFormat">
+                <option value=".woff2">WOFF2 (.woff2)</option>
+                <option value=".woff">WOFF (.woff)</option>
+                <option value=".otf">OTF (.otf)</option>
+                <option value=".ttf">TTF (.ttf)</option>
+            </select>
+            <button class="btn btn-success" id="btnConvert" disabled>🔄 转换并下载</button>
+            <button class="btn btn-danger" id="btnClear">🗑️ 清空</button>
+        </div>
+
+        <div class="table-container" id="tableContainer" style="display:none;">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:40px;">保留</th>
+                        <th data-sort="family">字体名称 <span class="sort-arrow">↕</span></th>
+                        <th data-sort="style">样式 <span class="sort-arrow">↕</span></th>
+                        <th data-sort="weight">字重 <span class="sort-arrow">↕</span></th>
+                        <th data-sort="format">格式 <span class="sort-arrow">↕</span></th>
+                        <th data-sort="fileName">文件名 <span class="sort-arrow">↕</span></th>
+                        <th data-sort="size" style="width:80px;">大小 <span class="sort-arrow">↕</span></th>
+                        <th>状态</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ===================== 全局状态 =====================
+        let fontEntries = [];
+        let sortColumn = null;
+        let sortAsc = true;
+
+        // ===================== 工具函数 =====================
+
+        function showToast(msg, duration) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(function () { toast.classList.remove('show'); }, duration || 2500);
+        }
+
+        function formatSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / 1048576).toFixed(2) + ' MB';
+        }
+
+        function getFormatFromExt(extension) {
+            var ext = extension.toLowerCase();
+            if (ext === '.woff2') return 'woff2';
+            if (ext === '.woff') return 'woff';
+            if (ext === '.sfnt' || ext === '.otf' || ext === '.ttf') return 'sfnt';
+            return ext.replace('.', '');
+        }
+
+        function getFileExtension(fileName) {
+            var idx = fileName.lastIndexOf('.');
+            if (idx === -1) return '';
+            return fileName.substring(idx).toLowerCase();
+        }
+
+        function normalizeWeight(weight) {
+            if (typeof weight === 'number') return weight;
+            if (!weight) return 400;
+            var w = weight.toString().toLowerCase();
+            var map = {
+                'thin': 100, 'hairline': 100,
+                'extralight': 200, 'ultralight': 200,
+                'light': 300,
+                'normal': 400, 'regular': 400, '': 400,
+                'medium': 500,
+                'semibold': 600, 'demibold': 600,
+                'bold': 700,
+                'extrabold': 800, 'ultrabold': 800,
+                'black': 900, 'heavy': 900
+            };
+            if (map[w] !== undefined) return map[w];
+            var num = parseInt(w);
+            return isNaN(num) ? 400 : num;
+        }
+
+        function escapeHtml(str) {
+            var div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // ===================== 读取文件 =====================
+
+        function readFileAsUint8Array(file) {
+            return new Promise(function (resolve, reject) {
+                var reader = new FileReader();
+                reader.onload = function () {
+                    resolve(new Uint8Array(reader.result));
+                };
+                reader.onerror = reject;
+                reader.readAsArrayBuffer(file);
+            });
+        }
+
+        // ===================== 解压 WOFF/WOFF2 → SFNT =====================
+
+        function woffToSfnt(buffer) {
+            var view = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+            var sig = view.getUint32(0);
+            if (sig !== 0x774F4646) { // 'wOFF'
+                return null;
+            }
+            var numTables = view.getUint16(12);
+            var sfntHeaderSize = 12 + 16 * numTables;
+            // 计算 sfnt 总大小
+            var sfntTotalLen = sfntHeaderSize;
+            for (var i = 0; i < numTables; i++) {
+                var dirOff = 44 + i * 20;
+                // WOFF 表目录: tag(4) + offset(4) + compLen(4) + origLen(4) + checksum(4)
+                var origLen = view.getUint32(dirOff + 12);
+                // 4 字节对齐
+                sfntTotalLen += (origLen + 3) & ~3;
+            }
+
+            var sfnt = new Uint8Array(sfntTotalLen);
+            var sfntView = new DataView(sfnt.buffer);
+
+            // 构建 SFNT 头部
+            sfntView.setUint32(0, view.getUint32(4)); // sfnt flavor
+            sfntView.setUint16(4, numTables);
+            // searchRange, entrySelector, rangeShift
+            var searchRange = 16;
+            var entrySelector = 0;
+            var rangeShift;
+            while (searchRange * 2 <= numTables) {
+                searchRange *= 2;
+                entrySelector++;
+            }
+            rangeShift = numTables * 16 - searchRange;
+            sfntView.setUint16(6, searchRange);
+            sfntView.setUint16(8, entrySelector);
+            sfntView.setUint16(10, rangeShift);
+
+            // 写入每个表的目录
+            var sfntDataOffset = sfntHeaderSize;
+            for (var j = 0; j < numTables; j++) {
+                var woffDirOff = 44 + j * 20;
+                var tag = view.getUint32(woffDirOff);
+                var woffDataOff = view.getUint32(woffDirOff + 4);
+                var compLen = view.getUint32(woffDirOff + 8);
+                var origLen = view.getUint32(woffDirOff + 12);
+                var checksum = view.getUint32(woffDirOff + 16);
+
+                // 解压表数据
+                var compressed = buffer.slice(woffDataOff, woffDataOff + compLen);
+                var decompressed;
+                try {
+                    decompressed = fflate.unzlibSync(compressed);
+                } catch (e) {
+                    // 可能是未压缩的
+                    decompressed = compressed;
+                }
+
+                // SFNT 表目录
+                var sdirOff = 12 + j * 16;
+                sfntView.setUint32(sdirOff, tag);
+                sfntView.setUint32(sdirOff + 4, checksum);
+                sfntView.setUint32(sdirOff + 8, sfntDataOffset);
+                sfntView.setUint32(sdirOff + 12, origLen);
+
+                // 复制解压后的数据
+                sfnt.set(decompressed.slice(0, origLen), sfntDataOffset);
+                sfntDataOffset += (origLen + 3) & ~3;
+            }
+
+            return sfnt;
+        }
+
+        function woff2ToSfnt(buffer) {
+            var view = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+            var sig = view.getUint32(0);
+            if (sig !== 0x774F4632) { // 'wOF2'
+                return null;
+            }
+            try {
+                var compressed = buffer.slice(48);
+                // 尝试 brotli 解压整个数据
+                return new Uint8Array(fflate.decompressSync(compressed));
+            } catch (e) {
+                console.warn('WOFF2 decompress failed:', e);
+                return null;
+            }
+        }
+
+        function decompressToSfnt(buffer, format) {
+            if (format === 'sfnt') {
+                return buffer;
+            }
+            if (format === 'woff') {
+                var sfnt = woffToSfnt(buffer);
+                return sfnt || buffer;
+            }
+            if (format === 'woff2') {
+                var sfnt2 = woff2ToSfnt(buffer);
+                return sfnt2 || buffer;
+            }
+            return buffer;
+        }
+
+        // ===================== 构建 WOFF (符合规范) =====================
+
+        function buildWOFF(sfntBuffer) {
+            var view = new DataView(sfntBuffer.buffer, sfntBuffer.byteOffset, sfntBuffer.byteLength);
+            var sfntVersion = view.getUint32(0);
+            var numTables = view.getUint16(4);
+
+            // 读取每个表的信息
+            var tables = [];
+            for (var i = 0; i < numTables; i++) {
+                var dirOff = 12 + i * 16;
+                tables.push({
+                    tag: view.getUint32(dirOff),
+                    checksum: view.getUint32(dirOff + 4),
+                    offset: view.getUint32(dirOff + 8),
+                    length: view.getUint32(dirOff + 12),
+                    data: null,
+                    compressedData: null
+                });
+            }
+
+            // 提取每个表的数据并压缩
+            for (var t = 0; t < tables.length; t++) {
+                var tbl = tables[t];
+                tbl.data = sfntBuffer.slice(tbl.offset, tbl.offset + tbl.length);
+                tbl.compressedData = fflate.zlibSync(tbl.data, { level: 9 });
+            }
+
+            // 计算 WOFF 结构大小
+            var woffHeaderSize = 44;
+            var woffDirSize = numTables * 20;
+            var dataOffset = woffHeaderSize + woffDirSize;
+            var totalLen = dataOffset;
+            for (var k = 0; k < tables.length; k++) {
+                totalLen += tables[k].compressedData.length;
+                // 4 字节对齐
+                totalLen = (totalLen + 3) & ~3;
+            }
+
+            var woff = new Uint8Array(totalLen);
+            var woffView = new DataView(woff.buffer);
+
+            // WOFF 头部
+            woffView.setUint32(0, 0x774F4646);   // 'wOFF'
+            woffView.setUint32(4, sfntVersion);    // sfnt version
+            woffView.setUint32(8, totalLen);       // WOFF 总长度
+            woffView.setUint16(12, numTables);
+            woffView.setUint16(14, 0);             // reserved
+            woffView.setUint32(16, sfntBuffer.length); // sfnt 总大小
+            woffView.setUint16(20, 1);             // majorVersion
+            woffView.setUint16(22, 0);             // minorVersion
+            woffView.setUint32(24, 0);             // metaOffset
+            woffView.setUint32(28, 0);             // metaLength
+            woffView.setUint32(32, 0);             // metaOrigLength
+            woffView.setUint32(36, 0);             // privOffset
+            woffView.setUint32(40, 0);             // privLength
+
+            // 写入表目录和数据
+            var currentDataOff = dataOffset;
+            for (var m = 0; m < tables.length; m++) {
+                var t2 = tables[m];
+                var dirOff = woffHeaderSize + m * 20;
+                woffView.setUint32(dirOff + 0, t2.tag);
+                woffView.setUint32(dirOff + 4, currentDataOff);        // offset
+                woffView.setUint32(dirOff + 8, t2.compressedData.length); // compLength
+                woffView.setUint32(dirOff + 12, t2.length);             // origLength
+                woffView.setUint32(dirOff + 16, t2.checksum);           // checksum
+
+                woff.set(t2.compressedData, currentDataOff);
+                currentDataOff += t2.compressedData.length;
+                // 4 字节对齐 padding（用零填充）
+                while (currentDataOff % 4 !== 0) {
+                    currentDataOff++;
+                }
+            }
+
+            return woff;
+        }
+
+        // ===================== 构建 WOFF2（简化版 - 使用透明表格式） =====================
+
+        function buildWOFF2(sfntBuffer) {
+            // WOFF2 完整实现极其复杂。此处使用简化的方法：
+            // 1. 对 SFNT 进行 Brotli 压缩
+            // 2. 构建最小化的 WOFF2 头部
+            // 注意：这不是完全符合规范的 WOFF2，但包含了正确的头部签名和元数据
+            var view = new DataView(sfntBuffer.buffer, sfntBuffer.byteOffset, sfntBuffer.byteLength);
+            var sfntVersion = view.getUint32(0);
+            var numTables = view.getUint16(4);
+
+            // 对整个 SFNT 压缩（简化处理）
+            var compressed = fflate.compressSync(sfntBuffer, { level: 11 });
+
+            var headerSize = 48;
+            var totalLen = headerSize + compressed.length;
+            totalLen = (totalLen + 3) & ~3;
+
+            var woff2 = new Uint8Array(totalLen);
+            var woff2View = new DataView(woff2.buffer);
+
+            woff2View.setUint32(0, 0x774F4632);     // 'wOF2'
+            woff2View.setUint32(4, sfntVersion);     // sfnt version
+            woff2View.setUint32(8, totalLen);        // WOFF2 总长度
+            woff2View.setUint16(12, numTables);
+            woff2View.setUint16(14, 0);              // reserved
+            woff2View.setUint32(16, sfntBuffer.length);  // uncompressedFontSize
+            woff2View.setUint32(20, compressed.length);  // totalCompressedSize
+            woff2View.setUint16(24, 0);              // 标志: 无变换表
+            woff2View.setUint16(26, 0);              // reserved
+            woff2View.setUint16(28, 0);              // glyf transform version (0 = none)
+            woff2View.setUint16(30, 0);              // loca transform version (0 = none)
+            woff2View.setUint32(32, 0);              // metadata offset
+            woff2View.setUint32(36, 0);              // metadata length
+            woff2View.setUint32(40, 0);              // metadata orig length
+            woff2View.setUint32(44, 0);              // private data length
+
+            woff2.set(compressed, headerSize);
+
+            return woff2;
+        }
+
+        // ===================== opentype.js 生成标准 SFNT =====================
+
+        function serializeToSFNT(font) {
+            // opentype.js 可以跨平台输出 OTF (CFF) 或 TTF (glyf)
+            // 保留原始轮廓类型，只确保输出标准 SFNT
+            try {
+                var buffer = font.toArrayBuffer();
+                return new Uint8Array(buffer);
+            } catch (e) {
+                console.warn('opentype.toArrayBuffer failed:', e);
+                return null;
+            }
+        }
+
+        // ===================== 解析字体 =====================
+
+        async function parseFontEntry(file) {
+            var fileName = file.name;
+            var ext = getFileExtension(fileName);
+            var format = getFormatFromExt(ext);
+            var buffer = await readFileAsUint8Array(file);
+
+            // 解压为 sfnt
+            var sfntBuffer = decompressToSfnt(buffer, format);
+            if (!sfntBuffer || sfntBuffer.length < 8) {
+                sfntBuffer = buffer;
+            }
+
+            var family = '未知';
+            var style = 'Regular';
+            var weight = 400;
+
+            // 使用 opentype.js 解析
+            var parsedFont = null;
+            try {
+                parsedFont = opentype.parse(sfntBuffer.buffer);
+                if (parsedFont && parsedFont.names) {
+                    var nm = parsedFont.names;
+                    if (nm.fontFamily && nm.fontFamily.en) {
+                        family = nm.fontFamily.en;
+                    } else if (nm.preferredFamily && nm.preferredFamily.en) {
+                        family = nm.preferredFamily.en;
+                    }
+                    if (nm.fontSubfamily && nm.fontSubfamily.en) {
+                        style = nm.fontSubfamily.en;
+                    } else if (nm.preferredSubfamily && nm.preferredSubfamily.en) {
+                        style = nm.preferredSubfamily.en;
+                    }
+                }
+                if (parsedFont && parsedFont.tables && parsedFont.tables.os2) {
+                    weight = parsedFont.tables.os2.usWeightClass || 400;
+                }
+            } catch (e) {
+                console.warn('解析字体元数据失败:', fileName, e);
+            }
+
+            if (family === '未知' || family === '') {
+                family = fileName.replace(/\.[^.]+$/, '');
+            }
+
+            // 重新序列化 sfnt 以获得干净的二进制（如果解析成功）
+            var cleanSfnt = sfntBuffer;
+            if (parsedFont) {
+                var serialized = serializeToSFNT(parsedFont);
+                if (serialized && serialized.length > 0) {
+                    cleanSfnt = serialized;
+                }
+            }
+
+            return {
+                file: file,
+                fileName: fileName,
+                size: file.size,
+                family: family,
+                style: style,
+                weight: normalizeWeight(weight),
+                format: format,
+                buffer: buffer,
+                sfntBuffer: cleanSfnt,
+                parsedFont: parsedFont,
+                keep: true,
+                groupId: null
+            };
+        }
+
+        // ===================== 分组与去重 =====================
+
+        function groupFonts(entries) {
+            var groups = new Map();
+            for (var i = 0; i < entries.length; i++) {
+                var entry = entries[i];
+                var key = entry.family + '|||' + entry.style + '|||' + entry.weight;
+                if (!groups.has(key)) {
+                    groups.set(key, []);
+                }
+                groups.get(key).push(entry);
+            }
+            return groups;
+        }
+
+        function autoSelectBest() {
+            var groups = groupFonts(fontEntries);
+            var formatRank = { 'woff2': 0, 'woff': 1, 'sfnt': 2 };
+
+            groups.forEach(function (group) {
+                var best = group[0];
+                var bestRank = formatRank[best.format] != null ? formatRank[best.format] : 99;
+                var bestSize = best.size;
+
+                for (var i = 1; i < group.length; i++) {
+                    var entry = group[i];
+                    var rank = formatRank[entry.format] != null ? formatRank[entry.format] : 99;
+                    if (rank < bestRank || (rank === bestRank && entry.size < bestSize)) {
+                        best = entry;
+                        bestRank = rank;
+                        bestSize = entry.size;
+                    }
+                }
+
+                for (var j = 0; j < group.length; j++) {
+                    group[j].keep = (group[j] === best);
+                }
+            });
+
+            renderTable();
+            updateStats();
+            showToast('已自动选择每组中的最优版本');
+        }
+
+        function autoSelectBestSilent() {
+            var groups = groupFonts(fontEntries);
+            var formatRank = { 'woff2': 0, 'woff': 1, 'sfnt': 2 };
+
+            groups.forEach(function (group) {
+                var best = group[0];
+                var bestRank = formatRank[best.format] != null ? formatRank[best.format] : 99;
+                var bestSize = best.size;
+
+                for (var i = 1; i < group.length; i++) {
+                    var entry = group[i];
+                    var rank = formatRank[entry.format] != null ? formatRank[entry.format] : 99;
+                    if (rank < bestRank || (rank === bestRank && entry.size < bestSize)) {
+                        best = entry;
+                        bestRank = rank;
+                        bestSize = entry.size;
+                    }
+                }
+
+                for (var j = 0; j < group.length; j++) {
+                    group[j].keep = (group[j] === best);
+                }
+            });
+        }
+
+        function selectAll() {
+            for (var i = 0; i < fontEntries.length; i++) {
+                fontEntries[i].keep = true;
+            }
+            renderTable();
+            updateStats();
+        }
+
+        function deselectAll() {
+            for (var i = 0; i < fontEntries.length; i++) {
+                fontEntries[i].keep = false;
+            }
+            renderTable();
+            updateStats();
+        }
+
+        function toggleKeep(index) {
+            fontEntries[index].keep = !fontEntries[index].keep;
+            renderTable();
+            updateStats();
+        }
+
+        // ===================== 格式转换 =====================
+
+        async function convertAll() {
+            var keepEntries = fontEntries.filter(function (e) { return e.keep; });
+            if (keepEntries.length === 0) {
+                showToast('没有选中任何字体，请先勾选要保留的字体');
+                return;
+            }
+
+            var targetFormat = document.getElementById('targetFormat').value;
+            var btnConvert = document.getElementById('btnConvert');
+            var progressBar = document.getElementById('progressBar');
+            var progressFill = document.getElementById('progressFill');
+
+            btnConvert.disabled = true;
+            btnConvert.textContent = '⏳ 转换中...';
+            progressBar.classList.add('active');
+            progressFill.style.width = '0%';
+
+            try {
+                var zip = new JSZip();
+                var completed = 0;
+
+                for (var i = 0; i < keepEntries.length; i++) {
+                    var entry = keepEntries[i];
+                    var outputBuffer = null;
+                    var outputName = '';
+                    var baseName = entry.fileName.replace(/\.[^.]+$/, '');
+                    var sfntData = entry.sfntBuffer;
+
+                    if (!sfntData || sfntData.length === 0) {
+                        sfntData = entry.buffer;
+                    }
+
+                    switch (targetFormat) {
+                        case '.woff2':
+                            outputBuffer = buildWOFF2(sfntData);
+                            outputName = baseName + '.woff2';
+                            break;
+                        case '.woff':
+                            outputBuffer = buildWOFF(sfntData);
+                            outputName = baseName + '.woff';
+                            break;
+                        case '.otf':
+                            outputBuffer = sfntData;
+                            outputName = baseName + '.otf';
+                            break;
+                        case '.ttf':
+                            outputBuffer = sfntData;
+                            outputName = baseName + '.ttf';
+                            break;
+                        default:
+                            outputBuffer = entry.buffer;
+                            outputName = entry.fileName;
+                    }
+
+                    if (outputBuffer && outputBuffer.length > 0) {
+                        zip.file(outputName, outputBuffer);
+                    }
+
+                    completed++;
+                    var pct = Math.round((completed / keepEntries.length) * 100);
+                    progressFill.style.width = pct + '%';
+                    await new Promise(function (r) { setTimeout(r, 5); });
+                }
+
+                var zipBlob = await zip.generateAsync({ type: 'blob' });
+                var url = URL.createObjectURL(zipBlob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'fonts_converted.zip';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showToast('✅ 已转换 ' + keepEntries.length + ' 个字体并打包下载');
+            } catch (e) {
+                console.error('转换失败:', e);
+                showToast('❌ 转换过程中出现错误: ' + e.message);
+            } finally {
+                btnConvert.disabled = false;
+                btnConvert.textContent = '🔄 转换并下载';
+                progressBar.classList.remove('active');
+            }
+        }
+
+        // ===================== 渲染 =====================
+
+        function renderTable(sortedEntries) {
+            var entries = sortedEntries || fontEntries;
+            var tbody = document.getElementById('tableBody');
+            var groups = groupFonts(entries);
+
+            // 为每条目标记录制组信息
+            for (var i = 0; i < entries.length; i++) {
+                var entry = entries[i];
+                var gkey = entry.family + '|||' + entry.style + '|||' + entry.weight;
+                var group = groups.get(gkey);
+                entry._group = group;
+                entry._isDuplicate = group && group.length > 1;
+            }
+
+            tbody.innerHTML = entries.map(function (entry, idx) {
+                var isDup = entry._isDuplicate;
+                var groupSize = entry._group ? entry._group.length : 1;
+                var keepCountInGroup = entry._group ? entry._group.filter(function (e) { return e.keep; }).length : 1;
+                var isOnlyKept = keepCountInGroup === 1 && entry.keep && groupSize > 1;
+
+                var statusHtml = '';
+                if (isDup && entry.keep && isOnlyKept) {
+                    statusHtml = '<span class="keep-badge keep">✓ 唯一保留</span>';
+                } else if (isDup && entry.keep && keepCountInGroup > 1) {
+                    statusHtml = '<span class="keep-badge keep">保留 (组内' + keepCountInGroup + '/' + groupSize + ')</span>';
+                } else if (isDup && !entry.keep) {
+                    statusHtml = '<span class="keep-badge discard">已丢弃</span>';
+                } else if (!isDup && entry.keep) {
+                    statusHtml = '<span class="keep-badge keep">保留</span>';
+                } else {
+                    statusHtml = '<span class="keep-badge discard">已丢弃</span>';
+                }
+
+                return '<tr class="' + (isDup && !entry.keep ? 'duplicate' : '') + '" data-index="' + idx + '">' +
+                    '<td><input type="checkbox" ' + (entry.keep ? 'checked' : '') + ' onclick="toggleKeep(' + idx + ')" title="勾选以保留此文件"></td>' +
+                    '<td><span class="family-name">' + escapeHtml(entry.family) + '</span></td>' +
+                    '<td>' + escapeHtml(entry.style) + '</td>' +
+                    '<td>' + entry.weight + '</td>' +
+                    '<td><span class="format-badge ' + entry.format + '">' + entry.format.toUpperCase() + '</span></td>' +
+                    '<td>' + escapeHtml(entry.fileName) + '</td>' +
+                    '<td>' + formatSize(entry.size) + '</td>' +
+                    '<td>' + statusHtml + '</td>' +
+                    '</tr>';
+            }).join('');
+
+            // 表头排序状态
+            document.querySelectorAll('th[data-sort]').forEach(function (th) {
+                th.classList.toggle('sorted', th.dataset.sort === sortColumn);
+                var arrow = th.querySelector('.sort-arrow');
+                if (th.dataset.sort === sortColumn) {
+                    arrow.textContent = sortAsc ? '↑' : '↓';
+                } else {
+                    arrow.textContent = '↕';
+                }
+            });
+        }
+
+        function updateStats() {
+            var total = fontEntries.length;
+            var groups = groupFonts(fontEntries);
+            var keepCount = fontEntries.filter(function (e) { return e.keep; }).length;
+            var discardCount = total - keepCount;
+
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statUnique').textContent = groups.size;
+            document.getElementById('statKeep').textContent = keepCount;
+            document.getElementById('statDiscard').textContent = discardCount;
+
+            document.getElementById('btnConvert').disabled = keepCount === 0;
+        }
+
+        function sortBy(column) {
+            if (sortColumn === column) {
+                sortAsc = !sortAsc;
+            } else {
+                sortColumn = column;
+                sortAsc = true;
+            }
+
+            var sorted = fontEntries.slice().sort(function (a, b) {
+                var valA, valB;
+                switch (column) {
+                    case 'family': valA = a.family; valB = b.family; break;
+                    case 'style': valA = a.style; valB = b.style; break;
+                    case 'weight': valA = a.weight; valB = b.weight; break;
+                    case 'format': valA = a.format; valB = b.format; break;
+                    case 'fileName': valA = a.fileName; valB = b.fileName; break;
+                    case 'size': valA = a.size; valB = b.size; break;
+                    default: return 0;
+                }
+                if (typeof valA === 'string') {
+                    var cmp = valA.localeCompare(valB, 'zh-CN');
+                    return sortAsc ? cmp : -cmp;
+                }
+                return sortAsc ? valA - valB : valB - valA;
+            });
+
+            renderTable(sorted);
+        }
+
+        function clearAll() {
+            fontEntries = [];
+            sortColumn = null;
+            sortAsc = true;
+            document.getElementById('tableBody').innerHTML = '';
+            document.getElementById('tableContainer').style.display = 'none';
+            document.getElementById('toolbar').style.display = 'none';
+            document.getElementById('stats').style.display = 'none';
+            document.getElementById('btnConvert').disabled = true;
+            document.getElementById('fileInput').value = '';
+            document.getElementById('folderInput').value = '';
+            updateStats();
+        }
+
+        // ===================== 文件处理 =====================
+
+        async function processFiles(files) {
+            if (!files || files.length === 0) {
+                showToast('⚠️ 未检测到文件');
+                return;
+            }
+
+            var progressBar = document.getElementById('progressBar');
+            var progressFill = document.getElementById('progressFill');
+            progressBar.classList.add('active');
+            progressFill.style.width = '0%';
+
+            var validExts = ['.ttf', '.otf', '.sfnt', '.woff', '.woff2'];
+            var processed = 0;
+            var newEntries = [];
+            var skipped = 0;
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var ext = getFileExtension(file.name);
+
+                if (validExts.indexOf(ext) === -1) {
+                    processed++;
+                    skipped++;
+                    continue;
+                }
+
+                try {
+                    var entry = await parseFontEntry(file);
+                    newEntries.push(entry);
+                } catch (e) {
+                    console.error('处理文件失败:', file.name, e);
+                    skipped++;
+                }
+
+                processed++;
+                var pct = Math.round((processed / files.length) * 100);
+                progressFill.style.width = pct + '%';
+                await new Promise(function (r) { setTimeout(r, 5); });
+            }
+
+            if (newEntries.length > 0) {
+                fontEntries = fontEntries.concat(newEntries);
+                autoSelectBestSilent();
+
+                document.getElementById('tableContainer').style.display = 'block';
+                document.getElementById('toolbar').style.display = 'flex';
+                document.getElementById('stats').style.display = 'flex';
+                renderTable();
+                updateStats();
+
+                var msg = '✅ 成功加载 ' + newEntries.length + ' 个字体';
+                if (skipped > 0) {
+                    msg += '（跳过 ' + skipped + ' 个非字体文件）';
+                }
+                showToast(msg);
+            } else {
+                showToast('⚠️ 未识别到字体文件（支持 .ttf、.otf、.sfnt、.woff、.woff2）');
+            }
+
+            progressBar.classList.remove('active');
+        }
+
+        // ===================== 递归遍历文件夹 =====================
+
+        function readAllEntries(dirEntry) {
+            return new Promise(function (resolve) {
+                var allEntries = [];
+                var reader = dirEntry.createReader();
+
+                function readBatch() {
+                    reader.readEntries(function (batch) {
+                        if (batch.length === 0) {
+                            resolve(allEntries);
+                            return;
+                        }
+                        allEntries = allEntries.concat(Array.from(batch));
+                        readBatch();
+                    }, function (err) {
+                        console.error('readEntries error:', err);
+                        resolve(allEntries);
+                    });
+                }
+
+                readBatch();
+            });
+        }
+
+        async function traverseEntry(entry, fileList) {
+            if (entry.isFile) {
+                return new Promise(function (resolve) {
+                    entry.file(function (file) {
+                        fileList.push(file);
+                        resolve();
+                    });
+                });
+            } else if (entry.isDirectory) {
+                var children = await readAllEntries(entry);
+                var promises = children.map(function (child) {
+                    return traverseEntry(child, fileList);
+                });
+                await Promise.all(promises);
+            }
+        }
+
+        // ===================== 事件绑定 =====================
+
+        var dropzone = document.getElementById('dropzone');
+
+        // 拖放处理：使用统一逻辑
+        dropzone.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            dropzone.classList.add('drag-over');
+        });
+
+        dropzone.addEventListener('dragleave', function () {
+            dropzone.classList.remove('drag-over');
+        });
+
+        dropzone.addEventListener('drop', function (e) {
+            e.preventDefault();
+            dropzone.classList.remove('drag-over');
+
+            var allFiles = [];
+            var items = e.dataTransfer.items;
+
+            if (items) {
+                // 先尝试通过 webkitGetAsEntry 递归获取（支持文件夹）
+                var entryPromises = [];
+                for (var i = 0; i < items.length; i++) {
+                    var entry = items[i].webkitGetAsEntry ? items[i].webkitGetAsEntry() : null;
+                    if (entry) {
+                        entryPromises.push(traverseEntry(entry, allFiles));
+                    }
+                }
+
+                if (entryPromises.length > 0) {
+                    Promise.all(entryPromises).then(function () {
+                        processFiles(allFiles);
+                    });
+                } else {
+                    // 回退到 files
+                    processFiles(e.dataTransfer.files);
+                }
+            } else {
+                processFiles(e.dataTransfer.files);
+            }
+        });
+
+        // 按钮事件 - 使用 stopPropagation 防止冒泡到 dropzone
+        document.getElementById('btnSelectFiles').addEventListener('click', function (e) {
+            e.stopPropagation();
+            document.getElementById('fileInput').click();
+        });
+
+        document.getElementById('btnSelectFolder').addEventListener('click', function (e) {
+            e.stopPropagation();
+            document.getElementById('folderInput').click();
+        });
+
+        // 文件选择
+        document.getElementById('fileInput').addEventListener('change', function (e) {
+            processFiles(e.target.files);
+            e.target.value = '';
+        });
+
+        document.getElementById('folderInput').addEventListener('change', function (e) {
+            processFiles(e.target.files);
+            e.target.value = '';
+        });
+
+        // 工具栏按钮
+        document.getElementById('btnAutoSelect').addEventListener('click', autoSelectBest);
+        document.getElementById('btnSelectAll').addEventListener('click', selectAll);
+        document.getElementById('btnDeselectAll').addEventListener('click', deselectAll);
+        document.getElementById('btnConvert').addEventListener('click', convertAll);
+        document.getElementById('btnClear').addEventListener('click', clearAll);
+
+        // 表头排序
+        document.querySelectorAll('th[data-sort]').forEach(function (th) {
+            th.addEventListener('click', function () {
+                sortBy(th.dataset.sort);
+            });
+        });
+
+        // 初始化 - 检查库加载状态
+        window.addEventListener('DOMContentLoaded', function () {
+            var missing = [];
+            if (typeof opentype === 'undefined') missing.push('opentype.js（字体解析）');
+            if (typeof fflate === 'undefined') missing.push('fflate（压缩/解压）');
+            if (typeof JSZip === 'undefined') missing.push('JSZip（打包下载）');
+
+            if (missing.length > 0) {
+                showToast('⚠️ 以下库加载失败，相关功能不可用：' + missing.join('、'), 6000);
+            }
+        });
+    </script>
+</body>
+
+</html>
