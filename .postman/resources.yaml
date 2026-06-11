@@ -1,0 +1,13 @@
+# Use this workspace to collaborate
+workspace:
+  id: 732995e4-9e30-45b5-87d1-d8a62499448b
+
+cloudResources:
+  collections:
+    ..\postman\collections\Giffgaff-esim: 00624cf4-a040-4fc1-bcdd-4f3c29545ebf
+
+# All resources in the `postman/` folder are automatically registered in Local View.
+# Point to additional files outside the `postman/` folder to register them individually. Example:
+#localResources:
+#  collections:
+#    - ../tests/E2E Test Collection/
