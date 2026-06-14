@@ -1,7 +1,5 @@
 # 你好?
 
-[进入公开网盘](https://drive.camellia895.top){ .md-button .md-button--primary }
-[网盘说明](网盘/index.md){ .md-button }
 
 
 - 通过主题和目录浏览文章。
@@ -15,3 +13,12 @@
 >
 > 这是个色图网站，进站前务必确认性质 https://colorsite.librian.net/
 > 
+
+'''
+
+还未配置完成
+
+[进入公开网盘](https://drive.camellia895.top){ .md-button .md-button--primary }
+[网盘说明](网盘/index.md){ .md-button }
+
+'''

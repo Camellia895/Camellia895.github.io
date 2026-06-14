@@ -8,6 +8,7 @@ site_description: Camellia895的个人网站
 
 # [Navigtion]
 nav:
+  - 网盘: 网盘/index.md
   - 我:
     - ME/index.md
     - ME/致读者.md
