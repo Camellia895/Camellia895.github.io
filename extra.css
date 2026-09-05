@@ -1,0 +1,37 @@
+@font-face {
+  font-family: "Aa偷吃可爱长大的";
+  src: url("fonts/AaCute.woff") format("woff"),
+    url("fonts/AaCute.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body,
+input {
+  font-family: "Aa偷吃可爱长大的", Helvetica, Arial, sans-serif;
+}
+
+pre,
+code,
+kbd {
+  font-family: "Aa偷吃可爱长大的", monospace;
+}
+
+/* ICP 备案号样式 - 位于 md-social 容器内，social icons 右侧 */
+.md-social__icp {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.64rem;
+  white-space: nowrap;
+}
+
+/* 修复注释（annotate）tooltip 字体继承问题 */
+/* .md-tooltip 在 main.css 中被写死为 var(--md-text-font-family)，需覆盖 */
+.md-tooltip,
+.md-tooltip__inner {
+  font-family: inherit;
+}
+
+.md-annotation {
+  font-family: inherit;
+}
